@@ -1,10 +1,9 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-// import Link from "next/link";
-// import { Container } from "postcss";
 import Header from "~/components/Header";
 import Image from "next/image";
-
+import Footer from "~/components/Footer";
+import Collection from "~/components/Collection";
 const Home: NextPage = () => {
   return (
     <>
@@ -18,46 +17,39 @@ const Home: NextPage = () => {
           <Header />
         </div>
         <div className="relative mx-4 mt-24 flex flex-col justify-center gap-6">
-          <div className="flex h-[35rem] w-full overflow-hidden rounded-xl drop-shadow-lg">
-            <div className="hero min-h-screen bg-base-200">
-              <div className="hero-content flex-col lg:flex-row">
-                {/* <img
-                  src="/Banner1.png"
-                  className="max-w-sm rounded-lg shadow-2xl"
-                /> */}
-                <div className=" w-[24rem] h-full rounded-lg shadow-2xl"> <Image
-                alt="banner"
-                src="/Banner1.png"
-                fill
-                className="z-0 object-contain object-right-top"
-              /></div>
-                <div>
-                  <h1 className="text-5xl font-bold">Box Office News!</h1>
+          <div className="flex w-full overflow-hidden rounded-xl shadow-2xl">
+            <div className="hero bg-base-100">
+              <div className="hero-content w-full max-w-none flex-col-reverse px-0 py-0 md:flex-row">
+                <div className="relative left-0 h-[35rem] w-full overflow-hidden">
+                  <Image
+                    alt="banner"
+                    src="/Banner1.png"
+                    fill
+                    className="z-10 object-cover object-right-top"
+                  />
+                </div>
+                <div className="px-10 py-10">
+                  <h1 className="w-1/2 whitespace-nowrap text-5xl font-bold">
+                    Happier Kids
+                  </h1>
                   <p className="py-6">
                     Provident cupiditate voluptatem et in. Quaerat fugiat ut
                     assumenda excepturi exercitationem quasi. In deleniti eaque
                     aut repudiandae et a id nisi.
                   </p>
-                  <button className="btn-primary btn">Get Started</button>
+                  <button className="btn-primary btn">Explore</button>
                 </div>
               </div>
             </div>
-            {/* <div className="z-0">
-              <Image
-                alt="banner"
-                src="/Banner1.png"
-                fill
-                className="z-0 object-cover object-right-top"
-              />
-            </div>
-            <div className="absolute right-0 top-1/2 z-10 text-black align-middle">
-              <div className="flex flex-col justify-center mr-28 text-5xl font-bold text-primary-content align-middle">HappyKids  </div>
-            </div> */}
           </div>
-          <div className="flex w-full overflow-hidden rounded-xl bg-base-100 drop-shadow-lg">
-            <h1 className="h1">Store Collections</h1>
+          <div className="flex w-full flex-col  items-center justify-center rounded-xl bg-base-100 drop-shadow-lg">
+            <h1 className="my-10 text-4xl font-bold ">New Arrivals</h1>
+            <div className="overflow-scroll w-full">
+              <Collection />
+            </div>
           </div>
         </div>
+        <Footer />
       </main>
     </>
   );
