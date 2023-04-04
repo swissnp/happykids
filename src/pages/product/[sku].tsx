@@ -43,7 +43,7 @@ const ProductPage = ({
                   )}
                 </div>
                 <div className="px-10 py-10">
-                  <h1 className="w-1/2 whitespace-nowrap text-5xl font-bold">
+                  <h1 className="text-5xl font-bold">
                     {productData?.name}
                   </h1>
                   <p className="py-6">{productData?.description}</p>
