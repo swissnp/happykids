@@ -4,7 +4,11 @@ import Header from "~/components/Header";
 import Image from "next/image";
 import Footer from "~/components/Footer";
 import Collection from "~/components/Collection";
-const Home: NextPage = () => {
+import type {
+  INewArrivalSchema,
+  INewArrivalSchemaList,
+} from "~/components/validation/newArrival";
+const Home = ({res}: {res: Array<INewArrivalSchemaList> }) => {
   return (
     <>
       <Head>
@@ -44,8 +48,8 @@ const Home: NextPage = () => {
           </div>
           <div className="flex w-full flex-col  items-center justify-center rounded-xl bg-base-100 drop-shadow-lg">
             <h1 className="my-10 text-4xl font-bold ">New Arrivals</h1>
-            <div className="overflow-scroll w-full">
-              <Collection />
+            <div className="w-full overflow-scroll">
+              <Collection response={res} />
             </div>
           </div>
         </div>
@@ -56,3 +60,23 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+export async function getStaticProps() {
+  const res = await fetch(
+    "https://skillkamp-api.com/v1/api/products/new_arrivals"
+  )
+    .then((response) => response.json()) // convert json string to object
+    .then((data: INewArrivalSchema) => {
+      return data.detail.data.catalog.category.productsWithMetaData.list;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+  return {
+    props: {
+      res,
+      revalidate: 60,
+    },
+  };
+}

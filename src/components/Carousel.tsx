@@ -1,7 +1,5 @@
-import React, { useState } from "react";
 import type { INewArrivalSchemaMedia } from "./validation/newArrival";
 const Carousel = ({ mediaList, sku }: { mediaList: INewArrivalSchemaMedia[], sku:string }) => {
-  const [currentSlide, setCurrentSlide] = useState(1);
   return (
     <div className="carousel w-full">
       {mediaList.map((item: INewArrivalSchemaMedia) => {

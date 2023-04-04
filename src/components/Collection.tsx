@@ -4,20 +4,9 @@ import type {
   INewArrivalSchemaList,
 } from "./validation/newArrival";
 import Carousel from "./Carousel";
-const Collection = () => {
-  const [response, setResponse] = useState<Array<INewArrivalSchemaList>>([]);
-  useEffect(() => {
-    fetch("https://skillkamp-api.com/v1/api/products/new_arrivals")
-      .then((response) => response.json()) // convert json string to object
-      .then((data: INewArrivalSchema) => {
-        setResponse(
-          data.detail.data.catalog.category.productsWithMetaData.list
-        ); // whyyyyyyyyyyyy
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+import Link from "next/link";
+
+const Collection = ({response}: {response: Array<INewArrivalSchemaList> }) => {
   return (
     <div className="max-w-5 mx-5 flex flex-col items-center gap-x-4 pb-5 sm:flex-row ">
       {response.map((item: INewArrivalSchemaList) => {
@@ -56,11 +45,13 @@ const Collection = () => {
               </div>
               <div className="card-actions justify-end">
                 <button className="btn-secondary btn">Details</button>
-                <button
+                <Link 
+                href={`/product/${item.sku}`}
+                  
                   className={`btn-primary btn ${
                     item.isInStock === false ? "btn-disabled" : ""
                   }`}
-                >{`Buy Now ${item.formattedDiscountedPrice}`}</button>
+                >{`Buy Now ${item.formattedDiscountedPrice}`}</Link>
               </div>
             </div>
           </div>
