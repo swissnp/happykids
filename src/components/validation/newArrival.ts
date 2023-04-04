@@ -1,5 +1,13 @@
 import * as z from "zod";
-const newArrivalScemaList = z.object({
+const newArrivalSchemaMedia = z.object({
+  url: z.string(),
+  index: z.number(),
+  mediaType: z.string(),
+  altText: z.string().or(z.null()),
+  title: z.string(),
+});
+
+const newArrivalSchemaList = z.object({
   id: z.string(),
   options: z.array(
     z.object({
@@ -16,21 +24,14 @@ const newArrivalScemaList = z.object({
   formattedDiscountedPrice: z.string(),
   formattedPrice: z.string(),
   name: z.string(),
-  media: z.array(
-    z.object({
-      url: z.string(),
-      index: z.number(),
-      mediaType: z.string(),
-      altText : z.string().or(z.null()),
-      title: z.string(),
-    })
-  ),
-  inventory : z.object({
-      status : z.string(),
-      quantity : z.number()
-  })
-})
-const newArrivalScema = z.object({
+  media: z.array(newArrivalSchemaMedia),
+  inventory: z.object({
+    status: z.string(),
+    quantity: z.number(),
+  }),
+});
+
+const newArrivalSchema = z.object({
   detail: z.object({
     data: z.object({
       catalog: z.object({
@@ -38,15 +39,15 @@ const newArrivalScema = z.object({
           numOfProducts: z.number(),
           productsWithMetaData: z.object({
             totalcount: z.number(),
-            list: z.array(
-              newArrivalScemaList
-            ),
+            list: z.array(newArrivalSchemaList),
           }),
         }),
       }),
     }),
   }),
 });
+
 // make a proper schema in your docs pls
-export type INewArrivalScema = z.infer<typeof newArrivalScema>;
-export type INewArrivalScemaList= z.infer<typeof newArrivalScemaList>;
+export type INewArrivalSchema = z.infer<typeof newArrivalSchema>;
+export type INewArrivalSchemaList = z.infer<typeof newArrivalSchemaList>;
+export type INewArrivalSchemaMedia = z.infer<typeof newArrivalSchemaMedia>;

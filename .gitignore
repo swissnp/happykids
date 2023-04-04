@@ -40,3 +40,6 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+src/pages/log.json
+src/pages/product.json
+.gitignore
