@@ -8,7 +8,7 @@ import type {
   INewArrivalSchema,
   INewArrivalSchemaList,
 } from "~/components/validation/newArrival";
-const Home = ({res}: {res: Array<INewArrivalSchemaList> }) => {
+const Home = ({ res }: { res: Array<INewArrivalSchemaList> }) => {
   return (
     <>
       <Head>
@@ -76,7 +76,7 @@ export async function getStaticProps() {
   return {
     props: {
       res,
-      revalidate: 60,
     },
+    revalidate: 60,
   };
 }

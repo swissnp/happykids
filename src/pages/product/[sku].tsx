@@ -89,8 +89,8 @@ export async function getStaticProps({ params }: { params: { sku: string } }) {
   return {
     props: {
       productData,
-      revalidate: 60,
     },
+    revalidate: 60,
   };
 }
 export default ProductPage;
