@@ -3,22 +3,16 @@ import Head from "next/head";
 import Image from "next/image";
 import Header from "~/components/Header";
 import LoginForm from "~/components/LoginForm";
-import type { ISignUp, IRequestSignUp } from "~/components/validation/auth";
+import type { ILogin } from "~/components/validation/auth";
 
-const Register: NextPage = () => {
-  //   const { mutateAsync } = api.auth.signUp.useMutation();
-  const mergeName = (data: ISignUp): IRequestSignUp => {
-    const { firstname, lastname, ...rest } = data;
-    return { fullname: `${firstname} ${lastname}`, ...rest };
-  }
+const Login: NextPage = () => {
 
-  const onSubmit = async (data: ISignUp) => {
-    const mergedData = mergeName(data);
+  const onSubmit = async (data: ILogin) => {
     const result = await fetch(
-      "https://skillkamp-api.com//v1/api/auth/signup",
+      "https://skillkamp-api.com/v1/api/auth/login",
       {
         method: "POST",
-        body: JSON.stringify(mergedData),
+        body: JSON.stringify(data),
         headers: {
           "Content-type": "application/json; charset=UTF-8",
         },
@@ -45,7 +39,8 @@ const Register: NextPage = () => {
               <Image
                 className="object-contain object-right-bottom"
                 src={"/he_with_mobile_and_ID.png"}
-                alt="icon register"
+                priority={true} //this is a largest contentful paint so we will make it priority
+                alt="icon login"
                 fill
               />
             </div>
@@ -71,4 +66,4 @@ const Register: NextPage = () => {
   );
 };
 
-export default Register;
+export default Login;

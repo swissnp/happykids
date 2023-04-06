@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import type {
-  INewArrivalSchema,
   INewArrivalSchemaList,
 } from "./validation/newArrival";
 import Carousel from "./Carousel";
 import Link from "next/link";
-
+// new arrivals component this will be used in home page
 const Collection = ({response}: {response: Array<INewArrivalSchemaList> }) => {
   return (
     <div className="max-w-5 mx-5 flex flex-col items-center gap-x-4 pb-5 sm:flex-row ">
@@ -16,10 +15,6 @@ const Collection = ({response}: {response: Array<INewArrivalSchemaList> }) => {
             key={item.sku}
           >
             <figure>
-              {/* <img
-                src={item.media[0]?.url}
-                alt={item.media[0]?.altText || "image"}
-              /> */}
               <Carousel mediaList={item.media} sku={item.sku}/>
             </figure>
             <div className="card-body">

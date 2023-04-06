@@ -1,4 +1,3 @@
-import { type NextPage } from "next";
 import Head from "next/head";
 import Header from "~/components/Header";
 import Image from "next/image";
@@ -24,15 +23,16 @@ const Home = ({ res }: { res: Array<INewArrivalSchemaList> }) => {
           <div className="flex w-full overflow-hidden rounded-xl shadow-2xl">
             <div className="hero bg-base-100">
               <div className="hero-content w-full max-w-none flex-col-reverse px-0 py-0 md:flex-row">
-                <div className="relative left-0 h-[35rem] w-full overflow-hidden">
+                <div className="relative left-0 h-[35rem] w-full md:w-1/2 overflow-hidden">
                   <Image
                     alt="banner"
                     src="/Banner1.png"
+                    priority={true} //this is a largest contentful paint so we will make it priority
                     fill
                     className="z-10 object-cover object-right-top"
                   />
                 </div>
-                <div className="px-10 py-10">
+                <div className="px-10 py-10 w-full md:w-1/2">
                   <h1 className=" text-5xl font-bold">
                     Happier Kids
                   </h1>
@@ -61,6 +61,7 @@ const Home = ({ res }: { res: Array<INewArrivalSchemaList> }) => {
 
 export default Home;
 
+// ISR (Incremental Static Regeneration) is a Next.js feature that allows you to update existing pages by re-rendering them in the background as traffic comes in.
 export async function getStaticProps() {
   const res = await fetch(
     "https://skillkamp-api.com/v1/api/products/new_arrivals"
@@ -78,5 +79,6 @@ export async function getStaticProps() {
       res,
     },
     revalidate: 60,
+    // revalidate cached page every 60 seconds
   };
 }

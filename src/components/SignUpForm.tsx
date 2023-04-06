@@ -17,6 +17,7 @@ export default function SignUpForm({
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isValid, isSubmitting },
   } = useForm<ISignUp>({
     resolver: zodResolver(signUpSchema),
@@ -27,22 +28,30 @@ export default function SignUpForm({
     <form
       className="form-control flex text-sm leading-normal"
       id="register-form"
-      onSubmit={
-        void handleSubmit(async (data) => {
-          try {
-            await onSubmit(data);
+      onSubmit={handleSubmit(async (data) => {
+        try {
+          const response = await onSubmit(data);
+          if (response.status === 200){
+            setError("email", { message: "User account already existing." });
+          } else if (response.status === 422){
+            setError("root.serverError", { message: "Invalid data, please recheck your information." });
+          } else if (response.ok) {
             await router.push({
               pathname: "/login",
               query: { SignUpSuccess: "true" },
             });
-          } catch (e) {
-            // catch error from api
+          } else {
+            setError("root.serverError", { message: "Unknown error, please try again later" });
           }
-        })
-      }
+        } catch (e) {
+          if (e instanceof Error) {
+            setError("root.serverError", { message: e.message });
+          }
+        }
+      })}
     >
       <div className="relative grid h-auto w-full flex-nowrap text-neutral-500">
-        <div className="flex flex-nowrap flex-row gap-x-4 w-full justify-center">
+        <div className="flex w-full flex-row flex-nowrap justify-center gap-x-4">
           <div className="flex w-full">
             <InputField
               label="Firstname"

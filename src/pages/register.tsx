@@ -15,7 +15,7 @@ const Register: NextPage = () => {
   const onSubmit = async (data: ISignUp) => {
     const mergedData = mergeName(data);
     const result = await fetch(
-      "https://skillkamp-api.com//v1/api/auth/signup",
+      "https://skillkamp-api.com/v1/api/auth/signup",
       {
         method: "POST",
         body: JSON.stringify(mergedData),
@@ -45,6 +45,7 @@ const Register: NextPage = () => {
               <Image
                 className="object-contain object-right-bottom"
                 src={"/she_with_file.png"}
+                // priority={true} //this is a largest contentful paint so we will make it priority
                 alt="icon register"
                 fill
               />

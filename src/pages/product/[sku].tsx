@@ -1,20 +1,29 @@
-import React, { useRouter } from "next/router";
-import { skuSchema, type ISku } from "~/components/validation/route";
-import ErrorPage from "next/error";
+import React from "next/router";
 import Head from "next/head";
 import Image from "next/image";
 import Header from "~/components/Header";
 import Footer from "~/components/Footer";
 import type { IProductDetail } from "~/components/validation/productDetail";
 import { getSku, getProductData } from "~/lib/product";
+import Select from "react-tailwindcss-select";
+import { useState } from "react";
+import type { SelectValue } from "react-tailwindcss-select/dist/components/type";
 
 //ISR this page for better SEO and performance
+
+// const changePicture = () => {
+
+// }
 
 const ProductPage = ({
   productData,
 }: {
   productData: IProductDetail["detail"]["data"]["catalog"]["product"];
 }) => {
+  const [formSelection, setSelection] = useState<{
+    color: string | null;
+    size: SelectValue | null;
+  }>({ color: null, size: null });
   return (
     <>
       <Head>
@@ -27,46 +36,106 @@ const ProductPage = ({
           <Header />
         </div>
         <div className="relative mx-4 mt-24 flex flex-col justify-center gap-6">
-          <div className="flex w-full overflow-hidden rounded-xl shadow-2xl">
+          <div className="flex w-full flex-col overflow-hidden rounded-xl bg-white shadow-2xl">
             <div className="hero bg-base-100">
-              <div className="hero-content w-full max-w-none flex-col-reverse px-0 py-0 md:flex-row">
-                <div className="relative left-0 h-[35rem] w-full overflow-hidden">
+              <div className="hero-content w-full max-w-none flex-col md:px-5 md:py-5 md:flex-row p-0">
+                <div className="relative left-0 h-[30rem] w-full overflow-hidden md:rounded-3xl md:drop-shadow-xl md:w-[30rem] md:align-middle">
                   {productData ? (
                     <Image
                       alt={productData?.media[0]?.altText || "banner"}
                       src={productData?.media[0]?.fullUrl || "/Banner1.png"}
                       fill
-                      className="z-10 object-cover"
+                      priority={true} //this is a largest contentful paint so we will make it priority
+                      className="object-cover"
                     />
                   ) : (
-                    <progress className="progress w-56"></progress>
+                    <progress className="progress w-56 align-middle"></progress>
                   )}
                 </div>
-                <div className="px-10 py-10">
-                  <h1 className="text-5xl font-bold">
+                <div className="px-10 py-10 md:w-1/2 md:px-10">
+                  <h1 className="pb-6 text-5xl font-bold">
                     {productData?.name}
                   </h1>
-                  <p className="py-6">{productData?.description}</p>
-                  <button className="btn-primary btn">Explore</button>
+                  <p className="pb-6">{productData?.description}</p>
+                  <div className="flex flex-row gap-5 pb-6">
+                    {productData.options.map((option) => {
+                      if (option.title === "Color") {
+                        return (
+                          <div key={option.title}>
+                            <p className="mb-1">Color</p>
+                            {option.selections.map((selection) => {
+                              return (
+                                <input
+                                  key={selection.key}
+                                  type="radio"
+                                  name="radio-7"
+                                  style={{
+                                    backgroundColor: selection.value, // shouldnt do this but tailwind cant change class after build time
+                                    // borderColor: selection.value,
+                                  }}
+                                  value={selection.value}
+                                  onClick={(e) => {
+                                    setSelection({
+                                      ...formSelection, // destructuring the old state
+                                      color: (e.target as HTMLInputElement)
+                                        .value, // set new color to state
+                                    });
+                                  }}
+                                  className={`radio mr-2`}
+                                ></input>
+                              );
+                            })}
+                          </div>
+                        );
+                      } else {
+                        return (
+                          <div key={option.title} className="mb-2 w-40">
+                            <p className="mb-1">Size</p>
+                            <Select
+                              primaryColor={"blue"}
+                              value={formSelection?.size}
+                              onChange={(value: SelectValue) => {
+                                setSelection({
+                                  ...formSelection, // destructuring the old state
+                                  size: value, // set color to new state
+                                });
+                              }}
+                              options={option.selections.map((selection) => {
+                                return {
+                                  value: selection.value,
+                                  label: selection.description,
+                                };
+                              })}
+                            />
+                          </div>
+                        );
+                      }
+                    })}
+                  </div>
+                  <button
+                    className="btn-primary btn"
+                    onClick={() => console.log(formSelection)}
+                  >
+                    ADD TO CART
+                  </button>
                 </div>
               </div>
             </div>
-          </div>
-          <div className="flex w-full flex-col  items-center justify-center rounded-xl bg-base-100 drop-shadow-lg">
-            <h1 className="my-10 text-4xl font-bold ">New Arrivals</h1>
-            <div
-              tabIndex={0}
-              className="collapse-arrow rounded-box collapse border border-base-300 bg-base-100"
-            >
-              <div className="collapse-title text-xl font-medium">
-                Product Info
-              </div>
-              <div className="collapse-content">
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                </p>
-              </div>
+            <div className="mx-10 my-14 flex flex-col gap-10 md:m-20 md:flex-row">
+              {productData?.additionalInfo?.map((info) => {
+                return (
+                  <div className="w-full" key={info.id}>
+                    <div className="flex w-full flex-col">
+                      <h1 className="mb-3 text-2xl font-bold">{info.title}</h1>
+                      {info.description.slice(3, -5)} {/* remove the <p> tag */}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
+          </div>
+          <div className="flex w-full flex-row items-center justify-center rounded-xl bg-base-100 drop-shadow-lg">
+            {/* <h1 className="my-10 text-4xl font-bold ">New Arrivals</h1> */}
           </div>
         </div>
         <Footer />

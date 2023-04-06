@@ -37,21 +37,22 @@ export const productDetailSizeSelectionsSchema = z.object({
   linkedMediaItems: z.null(),
 });
 
-export const productDetailOptionsSchema = z.union([
+export const productDetailOptionsSchema = 
+z.discriminatedUnion('title' ,[
   z.object({
     // color option
     id: z.string(),
-    title: z.string(),
-    optionType: z.string(),
-    key: z.string(),
+    title: z.literal("Color"),
+    optionType: z.literal("COLOR"),
+    key: z.literal("Color"),
     selections: z.array(productDetailColorSelectionsSchema),
   }),
   z.object({
     // size option
     id: z.string(),
-    title: z.string(),
-    optionType: z.string(),
-    key: z.string(),
+    title: z.literal("Size"),
+    optionType: z.literal("DROP_DOWN"),
+    key: z.literal("Size"),
     selections: z.array(productDetailSizeSelectionsSchema),
   }),
 ]);
@@ -96,8 +97,16 @@ export const productDetailSchema = z.object({
 
 export type IProductDetail = z.infer<typeof productDetailSchema>;
 export type IProductDetailMedia = z.infer<typeof productDetailMediaSchema>;
-export type IProductDetailColorSelections = z.infer<typeof productDetailColorSelectionsSchema>;
-export type IProductDetailSizeSelections = z.infer<typeof productDetailSizeSelectionsSchema>;
+export type IProductDetailColorSelections = z.infer<
+  typeof productDetailColorSelectionsSchema
+>;
+export type IProductDetailSizeSelections = z.infer<
+  typeof productDetailSizeSelectionsSchema
+>;
 export type IProductDetailOptions = z.infer<typeof productDetailOptionsSchema>;
-export type IProductDetailAdditionalInfo = z.infer<typeof productDetailAdditionalInfoSchema>;
-export type IProductDetailInventory = z.infer<typeof productDetailSchema>["detail"]["data"]["catalog"]["product"]["inventory"];
+export type IProductDetailAdditionalInfo = z.infer<
+  typeof productDetailAdditionalInfoSchema
+>;
+export type IProductDetailInventory = z.infer<
+  typeof productDetailSchema
+>["detail"]["data"]["catalog"]["product"]["inventory"];

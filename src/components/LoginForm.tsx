@@ -1,7 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signUpSchema, type ISignUp } from "~/components/validation/auth";
+import { loginSchema, type ILogin } from "~/components/validation/auth";
 import InputField from "~/components/InputField";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -12,34 +12,37 @@ dayjs.extend(customParseFormat);
 export default function LoginForm({
   onSubmit,
 }: {
-  onSubmit: (data: ISignUp) => Promise<Response>;
+  onSubmit: (data: ILogin) => Promise<Response>;
 }) {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isValid, isSubmitting },
-  } = useForm<ISignUp>({
-    resolver: zodResolver(signUpSchema),
+  } = useForm<ILogin>({
+    resolver: zodResolver(loginSchema),
     mode: "onBlur",
   });
   const router = useRouter();
+
+
+
   return (
     <form
       className="form-control flex text-sm leading-normal"
-      id="register-form"
-      onSubmit={
-        void handleSubmit(async (data) => {
-          try {
-            await onSubmit(data);
-            await router.push({
-              pathname: "/login",
-              query: { SignUpSuccess: "true" },
-            });
-          } catch (e) {
-            // catch error from api
-          }
-        })
-      }
+      id="login-form"
+      onSubmit={handleSubmit(async (data) => {
+        const response = await onSubmit(data);
+        if (response.ok) {
+          await router.push("/");
+        } else if (response.status === 401) {
+          setError("root.serverError", { message: "Invalid email or password" });
+        } else if (response.status === 422) {
+          setError("root.serverError", { message: "Invalid data, please recheck your information." });
+        } else {
+          setError("root.serverError", { message: "Unknown error, please try again later" });
+        }
+      })}
     >
       <div className="relative grid h-auto w-full flex-nowrap text-neutral-500">
         <div className="sh-auto table-row w-full">
@@ -77,7 +80,7 @@ export default function LoginForm({
                 isSubmitting ? "loading" : ""
               }`}
             >
-              register
+              Login
             </button>
           </div>
         </div>

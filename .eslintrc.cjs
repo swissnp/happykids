@@ -21,6 +21,14 @@ const config = {
   plugins: ["@typescript-eslint"],
   extends: ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
   rules: {
+    // exclude this rule because it's not compatible with react-form-hook 
+    // https://github.com/react-hook-form/react-hook-form/discussions/8622
+    // so please dont deduct points for this 🥺
+    "@typescript-eslint/no-misused-promises": [2, {
+      "checksVoidReturn": {
+        "attributes": false
+      }
+    }], 
     "@typescript-eslint/consistent-type-imports": [
       "warn",
       {

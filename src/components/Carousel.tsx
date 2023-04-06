@@ -1,4 +1,5 @@
 import type { INewArrivalSchemaMedia } from "./validation/newArrival";
+import Image from "next/image";
 const Carousel = ({ mediaList, sku }: { mediaList: INewArrivalSchemaMedia[], sku:string }) => {
   return (
     <div className="carousel w-full">
@@ -7,9 +8,15 @@ const Carousel = ({ mediaList, sku }: { mediaList: INewArrivalSchemaMedia[], sku
           <div
             id={`slide${sku}${item.index}`}
             key={item.index}
-            className="carousel-item relative w-full"
+            className="carousel-item relative w-80 h-80"
           >
-            <img src={item.url} className="w-full" />
+                <Image
+                    alt={item.altText || "product image"}
+                    src={item.url}
+                    fill
+                    className="object-cover object-top"
+                  />
+                
             <div className="  ">
               {(item.index-1 >= 0) && <a
                 href={`#slide${sku}${item.index -1}`}
