@@ -4,21 +4,15 @@ import Image from "next/image";
 import Header from "~/components/Header";
 import LoginForm from "~/components/LoginForm";
 import type { ILogin } from "~/components/validation/auth";
+import { type SignInResponse, signIn } from "next-auth/react";
 
 const Login: NextPage = () => {
 
-  const onSubmit = async (data: ILogin) => {
-    const result = await fetch(
-      "https://skillkamp-api.com/v1/api/auth/login",
-      {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      }
-    );
-    return result;
+  const onSubmit = async (
+    data: ILogin
+  ): Promise<SignInResponse | undefined> => {
+    const response = await signIn("credentials", { ...data, redirect: false });
+    return response;
   };
 
   return (

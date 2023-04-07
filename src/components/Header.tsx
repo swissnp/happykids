@@ -1,6 +1,8 @@
 import React from "react";
 import Link from "next/link";
+import { signOut, useSession } from "next-auth/react";
 const Header = () => {
+  const { data: session } = useSession();
   return (
     <div className="navbar w-full rounded-2xl bg-base-100 drop-shadow-lg">
       <div className="navbar-start">
@@ -101,15 +103,20 @@ const Header = () => {
               tabIndex={0}
               className="dropdown-content menu rounded-box menu-compact relative mt-3 w-52 bg-base-100 p-2 shadow"
             >
-              <li>
-                <Link href="/login">Login</Link>
-              </li>
-              <li>
-                <Link href='/register'>Register</Link>
-              </li>
-              <li>
-                {/*logout button*/}
-              </li>
+              {!session ? (
+                <div>
+                  <li>
+                    <Link href="/login">Login</Link>
+                  </li>
+                  <li>
+                    <Link href="/register">Register</Link>
+                  </li>
+                </div>
+              ) : (
+                <li>
+                  <button onClick={() => signOut()}>Sign out</button>
+                </li>
+              )}
             </ul>
           </div>
           {/*  account button end */}

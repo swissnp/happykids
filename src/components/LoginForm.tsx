@@ -6,13 +6,14 @@ import InputField from "~/components/InputField";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { useRouter } from "next/router";
+import { type SignInResponse } from "next-auth/react";
 // import type { signUpRouter } from "~/server/api/routers/routers";
 dayjs.extend(customParseFormat);
 
 export default function LoginForm({
   onSubmit,
 }: {
-  onSubmit: (data: ILogin) => Promise<Response>;
+  onSubmit: (data: ILogin) => Promise<SignInResponse | undefined>;
 }) {
   const {
     register,
@@ -33,7 +34,9 @@ export default function LoginForm({
       id="login-form"
       onSubmit={handleSubmit(async (data) => {
         const response = await onSubmit(data);
-        if (response.ok) {
+        if (!response) {
+          setError("root.serverError", { message: "Unknown error, please try again later" });
+        } else if (response.ok) {
           await router.push("/");
         } else if (response.status === 401) {
           setError("root.serverError", { message: "Invalid email or password" });
