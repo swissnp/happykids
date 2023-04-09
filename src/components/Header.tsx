@@ -3,6 +3,7 @@ import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 const Header = () => {
   const { data: session } = useSession();
+
   return (
     <div className="navbar w-full rounded-2xl bg-base-100 drop-shadow-lg">
       <div className="navbar-start">

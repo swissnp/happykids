@@ -1,7 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema, type ILogin } from "~/components/validation/auth";
+import { loginSchema, type ILogin } from "~/lib/validation/auth";
 import InputField from "~/components/InputField";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";

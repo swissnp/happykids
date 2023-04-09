@@ -1,5 +1,5 @@
-import type { INewArrivalSchema, INewArrivalSchemaList } from "~/components/validation/newArrival";
-import type { IProductDetail } from "~/components/validation/productDetail";
+import type { INewArrivalSchema, INewArrivalSchemaList } from "~/lib/validation/newArrival";
+import type { IProductDetail } from "~/lib/validation/productDetail";
 
 // This function gets called at build time
 // This function gets all possible values of sku

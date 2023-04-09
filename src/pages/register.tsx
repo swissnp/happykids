@@ -3,7 +3,7 @@ import Head from "next/head";
 import Image from "next/image";
 import Header from "~/components/Header";
 import SignUpForm from "~/components/SignUpForm";
-import type { ISignUp, IRequestSignUp } from "~/components/validation/auth";
+import type { ISignUp, IRequestSignUp } from "~/lib/validation/auth";
 
 const Register: NextPage = () => {
   //   const { mutateAsync } = api.auth.signUp.useMutation();

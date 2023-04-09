@@ -1,4 +1,4 @@
-import type { INewArrivalSchemaMedia } from "./validation/newArrival";
+import type { INewArrivalSchemaMedia } from "../lib/validation/newArrival";
 import Image from "next/image";
 const Carousel = ({ mediaList, sku }: { mediaList: INewArrivalSchemaMedia[], sku:string }) => {
   return (

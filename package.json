@@ -10,6 +10,11 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.0.0",
+    "@tanstack/react-query": "^4.28.0",
+    "@trpc/client": "^10.19.1",
+    "@trpc/next": "^10.19.1",
+    "@trpc/react-query": "^10.19.1",
+    "@trpc/server": "^10.19.1",
     "daisyui": "^2.51.5",
     "dayjs": "^1.11.7",
     "flowbite": "^1.6.4",
@@ -20,7 +25,9 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.43.9",
     "react-tailwindcss-select": "^1.8.5",
-    "zod": "^3.21.4"
+    "superjson": "^1.12.2",
+    "zod": "^3.21.4",
+    "zod_utilz": "^0.7.3"
   },
   "devDependencies": {
     "@types/eslint": "^8.21.3",

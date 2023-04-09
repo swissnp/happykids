@@ -6,7 +6,7 @@ import Collection from "~/components/Collection";
 import type {
   INewArrivalSchema,
   INewArrivalSchemaList,
-} from "~/components/validation/newArrival";
+} from "~/lib/validation/newArrival";
 const Home = ({ res }: { res: Array<INewArrivalSchemaList> }) => {
   return (
     <>

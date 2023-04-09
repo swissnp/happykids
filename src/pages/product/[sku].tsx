@@ -3,16 +3,39 @@ import Head from "next/head";
 import Image from "next/image";
 import Header from "~/components/Header";
 import Footer from "~/components/Footer";
-import type { IProductDetail } from "~/components/validation/productDetail";
+import type { IProductDetail } from "~/lib/validation/productDetail";
 import { getSku, getProductData } from "~/lib/product";
 import Select from "react-tailwindcss-select";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import type { SelectValue } from "react-tailwindcss-select/dist/components/type";
+import { Session } from "next-auth";
+import { useSession } from "next-auth/react";
 
 //ISR this page for better SEO and performance
 
-// const changePicture = () => {
-
+// const handleSubmit = async (formSelection: {
+//   color: string | null;
+//   size: SelectValue | null;
+// },productData: IProductDetail["detail"]["data"]["catalog"]["product"],
+//   session: Session|null) => {
+//   const response = await fetch("/api/cart", {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//       Authorization: `Bearer ${}`,
+//     },
+//     body: JSON.stringify({
+//       "sku": "00001",
+//       "name": "I'm a product",
+//       "price": 19.99,
+//       "discountedPrice": 19.99,
+//       "color": "Green",
+//       "size": "18-24 months",
+//       "qty": 1
+//     }),
+//   });
+//   const data = await response.json();
+//   console.log(data);
 // }
 
 const ProductPage = ({
@@ -25,7 +48,7 @@ const ProductPage = ({
     size: SelectValue | null;
   }>({ color: null, size: null });
 
-  // this will set the state when therea is only one color
+  // this will set the state when there is only one color
   useEffect(() => {
   productData.options.map((option) => {
     if (option.title === "Color") {
@@ -36,6 +59,8 @@ const ProductPage = ({
         })
     }}
   })}, [productData.options]) // dont need formSelection because we need to set it only once when the page is loaded and not when the state is changed
+
+  const { data: session } = useSession();
 
   return (
     <>

@@ -1,7 +1,7 @@
 import React from "react";
 import type {
   INewArrivalSchemaList,
-} from "./validation/newArrival";
+} from "../lib/validation/newArrival";
 import Carousel from "./Carousel";
 import Link from "next/link";
 // new arrivals component this will be used in home page

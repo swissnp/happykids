@@ -1,4 +1,5 @@
 import * as z from "zod";
+import {zu} from  'zod_utilz';
 
 //this is the schema for the login form
 export const loginSchema = z.object({
@@ -17,6 +18,14 @@ export const requestSignUpSchema = loginSchema.extend({
     fullname : z.string().min(4).max(41)
 });
 
+export const responseLoginSchema = z.object({
+  detail: z.object({
+    Token: z.string(),
+    Name: z.string(),
+  })
+})
+
 export type ILogin = z.infer<typeof loginSchema>;
 export type ISignUp = z.infer<typeof signUpSchema>;
 export type IRequestSignUp = z.infer<typeof requestSignUpSchema>;
+export type IResponseLogin = z.infer<typeof responseLoginSchema>;

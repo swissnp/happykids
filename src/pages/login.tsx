@@ -3,7 +3,7 @@ import Head from "next/head";
 import Image from "next/image";
 import Header from "~/components/Header";
 import LoginForm from "~/components/LoginForm";
-import type { ILogin } from "~/components/validation/auth";
+import type { ILogin } from "~/lib/validation/auth";
 import { type SignInResponse, signIn } from "next-auth/react";
 
 const Login: NextPage = () => {
