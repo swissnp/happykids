@@ -1,5 +1,5 @@
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import { type IViewCartResponse } from "~/lib/validation/Cart";
+import { type IViewCartResponse } from "~/lib/validation/cart";
 export const CartRouter = createTRPCRouter({
     view: protectedProcedure
     // .input(z.null())

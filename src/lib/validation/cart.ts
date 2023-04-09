@@ -34,3 +34,4 @@ const viewCartResponseSchema = z.object({
 
 export type IAddToCart = z.infer<typeof addToCartSchema>;
 export type IViewCartResponse = z.infer<typeof viewCartResponseSchema>;
+export type ICartItem = z.infer<typeof CartItemSchema>;
