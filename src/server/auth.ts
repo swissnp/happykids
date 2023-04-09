@@ -8,6 +8,7 @@ import {
 import { type JWT } from "next-auth/jwt";
 import { type IResponseLogin } from "~/lib/validation/auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { TRPCError } from "@trpc/server";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -44,7 +45,7 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials, req) => {
-        const response = await fetch(
+        const payload = await fetch(
           "https://skillkamp-api.com/v1/api/auth/login",
           {
             method: "POST",
@@ -52,25 +53,34 @@ export const authOptions: NextAuthOptions = {
             headers: { "Content-Type": "application/json" },
           }
         )
-          .then((response) => response.json())
+          .then((response) => {
+            if (response.ok) {
+              return response.json();
+            } else if (response.status === 401) {
+              throw new TRPCError({ code: "UNAUTHORIZED" });
+            } else if (response.status === 401) {
+              throw new TRPCError({ code: "UNPROCESSABLE_CONTENT" });
+            }
+          })
           .then((data: IResponseLogin) => {
             return data;
+          })
+          .catch((error) => {
+            console.log(error);
           });
-        const user = {
-          id: response.detail.Name, // NextAuth requires `id` field
-          name: response.detail.Name,
-          access_token: response.detail.Token, // <-- retrive JWT token from external API response
-        };
-        if (user) {
-          return user;
-        } else {
-          return null;
-        }
+
+        if (payload) {
+          return {
+            id: payload.detail.Name, // NextAuth requires `id` field
+            name: payload.detail.Name,
+            access_token: payload.detail.Token, // <-- retrive JWT token from external API response
+          };
+        } else return null;
       },
     }),
   ],
   callbacks: {
-    jwt: ({ token, user }: { token: JWT, user: User }) => {
+    jwt: ({ token, user }: { token: JWT; user: User }) => {
       if (user) {
         token.account = {
           ...user,
