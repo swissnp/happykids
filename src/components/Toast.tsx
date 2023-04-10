@@ -2,7 +2,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { useEffect, useRef } from "react";
 import "react-toastify/dist/ReactToastify.css";
 
-export default function ErrorToast({ message }: { message: string }) {
+export function ErrorToast({ message }: { message: string }) {
   const toastId = useRef(false);
   useEffect(() => {
     if (message) {
