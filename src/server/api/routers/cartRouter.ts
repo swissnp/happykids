@@ -5,6 +5,7 @@ export const CartRouter = createTRPCRouter({
     // .input(z.null())
     .query(async ({ ctx }) => {
         const token = ctx.token || '';
+        console.log(token)
         const response = await fetch("https://skillkamp-api.com/v1/api/cart", {
             method: "GET",
             headers: {

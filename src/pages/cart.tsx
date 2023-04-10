@@ -2,40 +2,14 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 // import Image from "next/image";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import Image from "next/image";
 import { api } from "~/utils/api";
+import { requireAuth } from "~/server/requireAuth";
 
-// this page will be cliant side rendered
+// this page will be client side rendered
 
 const Cart = () => {
   const result = api.cart.view.useQuery();
-  // const [data, setData] = useState();
-  // useEffect(() => {
-  //   const data = result.data?.detail.cart_list.map((item) => {
-  //     return (
-  //       <tr key={item.sku}>
-  //       <td>
-  //         <div className="flex items-center space-x-3">
-  //           <div className="avatar">
-  //             <div className="mask mask-squircle h-12 w-12">
-  //               <img
-  //                 src={item.fullUrl}
-  //                 alt={item.name}
-  //               />
-  //             </div>
-  //           </div>
-  //           <div>
-  //             <div className="font-bold">{item.color}</div>
-  //             <div className="text-sm opacity-50">{item.size}</div>
-  //             <div className="text-sm opacity-50">{item.discountedPrice}</div>
-  //           </div>
-  //         </div>
-  //       </td>
-  //       <td>{item.qty}</td>
-  //       </tr>
-  //     );
-  //   });
-  // }, []);
   return (
     <>
       <Head>
@@ -49,20 +23,20 @@ const Cart = () => {
         </div>
         <div className="relative mx-4 mt-24 flex flex-col justify-center gap-6">
           <div className="flex w-full flex-col overflow-hidden rounded-xl bg-base-100 shadow-2xl">
-            <h1 className="mx-10 my-10 text-4xl font-bold ">Cart</h1>
-            <div className="mb-10 overflow-x-auto rounded-none md:rounded-xl md:mx-10 md:drop-shadow-xl">
-              <table className="table-compact table rounded-none w-full md:table-normal">
+            <h1 className="mx-10 my-10 text-4xl font-bold">Cart</h1>
+            <div className="mb-5 overflow-x-auto rounded-none md:mx-10 md:rounded-xl md:drop-shadow-xl">
+              <table className="table-compact table w-full rounded-none md:table-normal">
                 {/* head */}
-                <thead>
+                <thead className="rounded-none">
                   <tr>
-                    <th>Items</th>
+                    <th className="rounded-none">Items</th>
                     {/* <th>Options</th> */}
-                    <th>Amount</th>
+                    <th className="rounded-none">Amount</th>
                   </tr>
                 </thead>
                 <tbody>
                   {/* row 1 */}
-                  {result &&
+                  {result.data?.detail.cart_list &&
                     result.data?.detail.cart_list.map((item) => {
                       return (
                         <tr key={item.sku}>
@@ -70,7 +44,11 @@ const Cart = () => {
                             <div className="flex items-center space-x-3">
                               <div className="avatar">
                                 <div className="mask mask-squircle h-16 w-16">
-                                  <img src={item.fullUrl} alt={item.name} />
+                                  <Image
+                                    src={item.fullUrl}
+                                    alt={item.name}
+                                    fill
+                                  />
                                 </div>
                               </div>
                               <div>
@@ -85,9 +63,21 @@ const Cart = () => {
                             </div>
                           </td>
                           <td className="">
-                            {item.qty}{' x '}
-                            <div className={`opacity-50 inline-flex ${item.discountedPrice < item.price ? 'line-through decoration-error': ''}`}>
-                              {item.discountedPrice}
+                            {item.qty}
+                            {" x "}
+                            <div className="inline whitespace-nowrap">
+                              <p
+                                className={`${
+                                  item.discountedPrice != item.price
+                                    ? "line-through decoration-error"
+                                    : ""
+                                } inline`}
+                              >
+                                {item.price}
+                              </p>
+                              {item.discountedPrice != item.price && (
+                                <p className=" inline">{` → ${item.discountedPrice}`}</p>
+                              )}
                             </div>
                           </td>
                         </tr>
@@ -96,17 +86,33 @@ const Cart = () => {
                 </tbody>
               </table>
             </div>
-          </div>
-          {/* <div className="flex w-full flex-col  items-center justify-center rounded-xl bg-base-100 drop-shadow-lg">
-              <h1 className="my-10 text-4xl font-bold ">New Arrivals</h1>
-              <div className="w-full overflow-scroll">
-                <Collection response={res} />
+            {result.data?.detail && 
+              <div>
+                <div className="mx-5 mb-2 flex flex-row-reverse text-lg font-bold md:mx-16">{`Subtotal ${
+                  result.data?.detail.sub_total || 0
+                } $`}</div>
+                <div
+                  className={`mx-5 mb-2 flex flex-row-reverse text-lg font-bold md:mx-16 ${
+                    result.data?.detail.shipping === 0 ? "text-emerald-500" : ""
+                  }`}
+                >{`Shipping ${result.data?.detail.shipping || 0} $`}</div>
+                <div className="mx-5 mb-2 flex flex-row-reverse text-2xl font-bold md:mx-16">{`Total ${
+                  result.data?.detail.total || 0
+                } $`}</div>
               </div>
-            </div> */}
+            }
+            <button className="flex flex-row-reverse btn btn-primary mx-10 mt-5 mb-10">Buy Now</button>
+          </div>
         </div>
         <Footer />
       </main>
     </>
   );
 };
+
+// no idea how to fix this right now
+export const getServerSideProps = requireAuth(async (ctx) => {
+  return { props: {} };
+});
+
 export default Cart;

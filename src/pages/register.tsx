@@ -30,8 +30,8 @@ const Register: NextPage = () => {
   return (
     <>
       <Head>
-        <title>{"Swensen's"}</title>
-        <meta name="description" content="Swensen's" />
+        <title>{"Login 😀Kids"}</title>
+        <meta name="description" content="😀Kids" />
         <link rel="icon" href="/fav-sw.jpg" />
       </Head>
 

@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
+import { api } from "~/utils/api";
+import { ICartItem } from "~/lib/validation/cart";
+import { Result } from "postcss";
+
 const Header = () => {
   const { data: session } = useSession();
+  const cart = api.cart.view.useQuery().data?.detail.cart_list;
+
 
   return (
     <div className="navbar w-full rounded-2xl bg-base-100 drop-shadow-lg">
@@ -59,7 +65,7 @@ const Header = () => {
       <div className="navbar-end mr-2">
         <div className="flex w-10 flex-row justify-end">
           <label tabIndex={0} className="btn-ghost btn-circle btn flex px-3">
-            <div className="indicator">
+            <Link className="indicator" href={"/cart"}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5"
@@ -74,8 +80,12 @@ const Header = () => {
                   d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                 />
               </svg>
-              <span className="badge badge-sm indicator-item">8</span>
-            </div>
+              {cart && (
+                <span className="badge badge-sm indicator-item">
+                  {cart.length}
+                </span>
+              )}
+            </Link>
           </label>
           <div className="dropdown dropdown-end">
             <label

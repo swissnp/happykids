@@ -17,8 +17,6 @@
     "@trpc/server": "^10.19.1",
     "daisyui": "^2.51.5",
     "dayjs": "^1.11.7",
-    "flowbite": "^1.6.4",
-    "flowbite-react": "^0.4.2",
     "next": "^13.2.4",
     "next-auth": "^4.21.1",
     "react": "18.2.0",
@@ -26,8 +24,7 @@
     "react-hook-form": "^7.43.9",
     "react-tailwindcss-select": "^1.8.5",
     "superjson": "^1.12.2",
-    "zod": "^3.21.4",
-    "zod_utilz": "^0.7.3"
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@types/eslint": "^8.21.3",
@@ -40,6 +37,7 @@
     "autoprefixer": "^10.4.14",
     "eslint": "^8.36.0",
     "eslint-config-next": "^13.2.4",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "postcss": "^8.4.21",
     "prettier": "^2.8.6",
     "prettier-plugin-tailwindcss": "^0.2.5",

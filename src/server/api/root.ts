@@ -1,5 +1,5 @@
 import { createTRPCRouter } from "~/server/api/trpc";
-import { CartRouter } from "~/server/api/routers/viewCart";
+import { CartRouter } from "~/server/api/routers/cartRouter";
 /**
  * This is the primary router for your server.
  *

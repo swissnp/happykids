@@ -1,4 +1,5 @@
 import * as z from "zod";
+// import { Option } from "react-tailwindcss-select/dist/components/type";
 
 const addToCartSchema = z.object({
     sku: z.string(),
@@ -9,6 +10,14 @@ const addToCartSchema = z.object({
     size: z.string(),
     qty: z.number(),
 })
+
+export const itemFormSchema = z.object({
+  color: z.string(),
+  size: z.string(),
+  qty: z.number().optional(),
+});
+
+// const sizeSchema = z.instanceof(Option)
 
 const CartItemSchema = z.object({
   sku: z.string(),
@@ -35,3 +44,4 @@ const viewCartResponseSchema = z.object({
 export type IAddToCart = z.infer<typeof addToCartSchema>;
 export type IViewCartResponse = z.infer<typeof viewCartResponseSchema>;
 export type ICartItem = z.infer<typeof CartItemSchema>;
+export type IItemForm = z.infer<typeof itemFormSchema>;

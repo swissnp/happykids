@@ -8,35 +8,9 @@ import { getSku, getProductData } from "~/lib/product";
 import Select from "react-tailwindcss-select";
 import { useEffect, useState } from "react";
 import type { SelectValue } from "react-tailwindcss-select/dist/components/type";
-import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
 
 //ISR this page for better SEO and performance
-
-// const handleSubmit = async (formSelection: {
-//   color: string | null;
-//   size: SelectValue | null;
-// },productData: IProductDetail["detail"]["data"]["catalog"]["product"],
-//   session: Session|null) => {
-//   const response = await fetch("/api/cart", {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//       Authorization: `Bearer ${}`,
-//     },
-//     body: JSON.stringify({
-//       "sku": "00001",
-//       "name": "I'm a product",
-//       "price": 19.99,
-//       "discountedPrice": 19.99,
-//       "color": "Green",
-//       "size": "18-24 months",
-//       "qty": 1
-//     }),
-//   });
-//   const data = await response.json();
-//   console.log(data);
-// }
 
 const ProductPage = ({
   productData,
@@ -46,7 +20,8 @@ const ProductPage = ({
   const [formSelection, setSelection] = useState<{
     color: string | null;
     size: SelectValue | null;
-  }>({ color: null, size: null });
+    sizeValue: string | null;
+  }>({ color: null, size: null , sizeValue: null});
 
   // this will set the state when there is only one color
   useEffect(() => {
@@ -60,8 +35,7 @@ const ProductPage = ({
     }}
   })}, [productData.options]) // dont need formSelection because we need to set it only once when the page is loaded and not when the state is changed
 
-  const { data: session } = useSession();
-
+  
   return (
     <>
       <Head>
@@ -136,9 +110,11 @@ const ProductPage = ({
                               primaryColor={"blue"}
                               value={formSelection?.size}
                               onChange={(value: SelectValue) => {
+                                const size = value as { value: string; label: string}
                                 setSelection({
                                   ...formSelection, // destructuring the old state
                                   size: value, // set color to new state
+                                  sizeValue : size.value
                                 });
                               }}
                               options={option.selections.map((selection) => {
