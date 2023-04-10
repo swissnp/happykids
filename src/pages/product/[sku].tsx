@@ -1,23 +1,23 @@
 import React from "next/router";
 import Head from "next/head";
-import Image from "next/image";
+import { useRouter } from "next/router";
 import Header from "~/components/Header";
 import Footer from "~/components/Footer";
-import type { IProductDetail } from "~/lib/validation/productDetail";
-import { getSku, getProductData } from "~/lib/product";
-import Select from "react-tailwindcss-select";
-import { useEffect, useState } from "react";
-import type { SelectValue } from "react-tailwindcss-select/dist/components/type";
-import { api } from "~/utils/api";
-import { type IAddToCart } from "~/lib/validation/cart";
+import Carousel from "~/components/Carousel";
 import Collection from "~/components/Collection";
+import Select from "react-tailwindcss-select";
+import { api } from "~/utils/api";
+import { getSku, getProductData } from "~/lib/product";
+import { useEffect, useState } from "react";
+import type { IProductDetail } from "~/lib/validation/productDetail";
+import type { SelectValue } from "react-tailwindcss-select/dist/components/type";
+import { type IAddToCart } from "~/lib/validation/cart";
 import { TRPCClientError } from "@trpc/client";
 import type { CartRouter } from "~/server/api/routers/cartRouter";
 import type {
   INewArrivalSchemaList,
   INewArrivalSchema,
 } from "~/lib/validation/newArrival";
-import { useRouter } from "next/router";
 
 //ISR this page for better SEO and performance
 export function isTRPCClientError(
@@ -33,7 +33,11 @@ const ProductPage = ({
   res: Array<INewArrivalSchemaList>;
   productData: IProductDetail["detail"]["data"]["catalog"]["product"];
 }) => {
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<string>("");
+  const [state, setState] = useState<{ loading: boolean; submitted: boolean }>({
+    loading: false,
+    submitted: false,
+  });
   const [formSelection, setSelection] = useState<{
     color: string | null;
     size: SelectValue | null;
@@ -58,25 +62,38 @@ const ProductPage = ({
 
   const { mutateAsync } = api.cart.add.useMutation();
   const router = useRouter();
-  console.log(error);
   const onSubmit = async (data: IAddToCart) => {
-    try {
-      const response = await mutateAsync(data);
-    } catch (error) {
-      if (isTRPCClientError(error)) {
-        if (error.data?.code === "UNAUTHORIZED") {
-          await router.push({
-            pathname: "/login",
-            query: {
-              message: "Unauthorize, Please login first.",
-              redirect: router.asPath,
-            },
-          });
-        } else {
-          setError(error.message);
+    if (!formSelection.color) {
+      setError("Please select a color");
+      return;
+    } else if (!formSelection.sizeValue) {
+      setError("Please select a size");
+      return;
+    } else if (formSelection.qty < 1) {
+      setError("Please select a quantity");
+      return;
+    } else {
+      try {
+        setState({ loading: true, submitted: false });
+        const response = await mutateAsync(data);
+      } catch (error) {
+        if (isTRPCClientError(error)) {
+          if (error.data?.code === "UNAUTHORIZED") {
+            await router.push({
+              pathname: "/login",
+              query: {
+                message: "Unauthorize, Please login first.",
+                redirect: router.asPath,
+              },
+            });
+          } else {
+            setError(error.message);
+          }
         }
       }
     }
+
+    setState({ loading: false, submitted: true });
   };
 
   return (
@@ -94,23 +111,29 @@ const ProductPage = ({
           <div className="mb-5 flex flex-col overflow-hidden rounded-xl bg-white shadow-2xl">
             <div className="hero bg-base-100">
               <div className="hero-content w-full flex-col p-0 md:flex-row md:px-5 md:py-10">
-                <div className="relative left-0 h-[30rem] w-full overflow-hidden md:w-[30rem] md:rounded-3xl md:align-middle md:drop-shadow-xl">
-                  {productData ? (
-                    <Image
-                      alt={productData?.media[0]?.altText || "banner"}
-                      src={productData?.media[0]?.fullUrl || "/Banner1.png"}
-                      fill
-                      priority={true} //this is a largest contentful paint so we will make it priority
-                      className="object-cover"
-                    />
-                  ) : (
-                    <progress className="progress w-56 align-middle"></progress>
-                  )}
-                </div>
+                {/* <div className="h-[30rem] w-full overflow-hidden md:w-[30rem] md:rounded-3xl md:align-middle md:drop-shadow-xl md:justify-items-center object-center"> */}
+                {productData ? (
+                  <Carousel
+                    mediaList={productData.media.map((item) => {
+                      return { ...item, url: item.fullUrl };
+                    })}
+                    sku={productData.sku}
+                    classNameDiv="h-[30rem] w-full overflow-hidden md:w-[30rem] md:rounded-3xl md:drop-shadow-xl"
+                  />
+                ) : (
+                  <progress className="progress w-56 align-middle"></progress>
+                )}
+                {/* </div> */}
                 <div className="px-10 py-10 md:w-1/2 md:px-10">
                   <h1 className="pb-3 text-5xl font-bold">
                     {productData?.name}
+                    {productData.ribbon && (
+                      <div className="badge-accent badge mx-5 align-middle">
+                        {productData.ribbon}
+                      </div>
+                    )}
                   </h1>
+
                   <p className="pb-3">{productData?.description}</p>
                   <div className="whitespace-nowrap pb-3">
                     <p
@@ -126,7 +149,8 @@ const ProductPage = ({
                       <p className=" inline">{` → ${productData.formattedDiscountedPrice}`}</p>
                     )}
                   </div>
-                  <div className="mb-5 flex flex-wrap gap-x-5">
+                  <div className="mb-5">
+                    <div className="flex flex-wrap gap-x-5"> 
                     {productData.options.map((option) => {
                       if (option.title === "Color") {
                         if (option.selections.length > 1) {
@@ -144,8 +168,15 @@ const ProductPage = ({
                                       backgroundColor: selection.value, // shouldnt do this but tailwind cant change class after build time
                                       // borderColor: selection.value,
                                     }}
+                                    // href={`#slide${productData.sku}${selection.linkedMediaItems[0]?.index || 0}`}
                                     value={selection.description}
                                     onClick={(e) => {
+                                      location.href = `#slide${
+                                        productData.sku
+                                      }${
+                                        selection.linkedMediaItems[0]?.index ||
+                                        0
+                                      }`;
                                       setSelection({
                                         ...formSelection, // destructuring the old state
                                         color: (e.target as HTMLInputElement)
@@ -205,23 +236,28 @@ const ProductPage = ({
                         }}
                       ></input>
                     </div>
-                    {error && (<p className="text-sm">{error}</p>)}
+                    </div>
+                    {error && <p className="text-sm text-error">{error}</p>}
                   </div>
                   <button
-                    className="btn-primary btn relative"
+                    className={`btn-primary btn relative ${
+                      state.loading ? "loading" : ""
+                    }`}
                     onClick={() =>
                       onSubmit({
                         sku: productData.sku,
                         qty: formSelection.qty,
-                        color: formSelection.color || "default",
-                        size: formSelection.sizeValue || "default",
+                        color: formSelection.color || '',
+                        size: formSelection.sizeValue || '',
                         price: productData.price,
                         discountedPrice: productData.discountedPrice,
                         name: productData.name,
                       })
                     }
+                    // onFocus={() => setState({ ...state, submitted: false })}
+                    onBlur={() => setState({ ...state, submitted: false })}
                   >
-                    ADD TO CART
+                    {state.submitted ? "ADDED TO CART" : "ADD TO CART"}
                   </button>
                 </div>
               </div>

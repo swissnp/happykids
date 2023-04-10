@@ -15,7 +15,7 @@ const Collection = ({response}: {response: Array<INewArrivalSchemaList> }) => {
             key={item.sku}
           >
             <figure>
-              <Carousel mediaList={item.media} sku={item.sku}/>
+              <Carousel mediaList={item.media} sku={item.sku} className="w-80 h-80"/>
             </figure>
             <div className="card-body">
               <h2 className="card-title">

@@ -1,20 +1,20 @@
 import type { INewArrivalSchemaMedia } from "../lib/validation/newArrival";
 import Image from "next/image";
-const Carousel = ({ mediaList, sku }: { mediaList: INewArrivalSchemaMedia[], sku:string }) => {
+const Carousel = ({ mediaList, sku, className,classNameDiv }: { mediaList: INewArrivalSchemaMedia[], sku:string, className?: string, classNameDiv?: string }) => {
   return (
-    <div className="carousel w-full">
+    <div className={`carousel w-full ${classNameDiv || ''}`}>
       {mediaList.map((item: INewArrivalSchemaMedia) => {
         return (
           <div
             id={`slide${sku}${item.index}`}
             key={item.index}
-            className="carousel-item relative w-80 h-80"
+            className={`carousel-item relative w-full h-full${className || ''}`}
           >
                 <Image
                     alt={item.altText || "product image"}
                     src={item.url}
                     fill
-                    className="object-cover object-top"
+                    className=" object-cover object-center"
                   />
                 
             <div className="  ">

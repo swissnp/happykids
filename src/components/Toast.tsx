@@ -1,9 +1,8 @@
-
 import { toast, ToastContainer } from "react-toastify";
 import { useEffect, useRef } from "react";
 import "react-toastify/dist/ReactToastify.css";
 
-export default function ErrorToast({message}: {message: string}) {
+export default function ErrorToast({ message }: { message: string }) {
   const toastId = useRef(false);
   useEffect(() => {
     if (message) {
@@ -23,7 +22,7 @@ export default function ErrorToast({message}: {message: string}) {
   }, []);
   return (
     <div>
-        <ToastContainer />
+      <ToastContainer />
     </div>
   );
 }
