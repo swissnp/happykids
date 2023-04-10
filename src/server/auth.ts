@@ -58,7 +58,7 @@ export const authOptions: NextAuthOptions = {
               return response.json();
             } else if (response.status === 401) {
               throw new TRPCError({ code: "UNAUTHORIZED" });
-            } else if (response.status === 401) {
+            } else if (response.status === 422) {
               throw new TRPCError({ code: "UNPROCESSABLE_CONTENT" });
             }
           })
