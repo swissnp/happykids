@@ -39,7 +39,7 @@ const Collection = ({response}: {response: Array<INewArrivalSchemaList> }) => {
                 )}
               </div>
               <div className="card-actions justify-end">
-                <button className="btn-secondary btn">Details</button>
+                {/* <button className="btn-secondary btn">Details</button> */}
                 <Link 
                 href={`/product/${item.sku}`}
                   

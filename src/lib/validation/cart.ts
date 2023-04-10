@@ -19,7 +19,7 @@ export const itemFormSchema = z.object({
 
 // const sizeSchema = z.instanceof(Option)
 
-const CartItemSchema = z.object({
+export const CartItemSchema = z.object({
   sku: z.string(),
   name: z.string(),
   price: z.number(),
@@ -30,7 +30,7 @@ const CartItemSchema = z.object({
   fullUrl: z.string()
 })
 
-const viewCartResponseSchema = z.object({
+export const viewCartResponseSchema = z.object({
   detail: z.object({
     total: z.number(),
     shipping: z.number(),
