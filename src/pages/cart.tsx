@@ -5,6 +5,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { api } from "~/utils/api";
 import { requireAuth } from "~/server/requireAuth";
+import Link from "next/link";
 
 // this page will be client side rendered
 
@@ -42,7 +43,7 @@ const Cart = () => {
                         <tr key={item.sku + item.color + item.size}>
                           <td>
                             <div className="flex items-center space-x-3">
-                              <div className="avatar">
+                              <Link className="avatar" href={`/product/${item.sku}`}>
                                 <div className="mask mask-squircle h-16 w-16">
                                   <Image
                                     src={item.fullUrl}
@@ -50,9 +51,9 @@ const Cart = () => {
                                     fill
                                   />
                                 </div>
-                              </div>
+                              </Link>
                               <div>
-                                <div className="font-bold">{item.name}</div>
+                                <Link className="font-bold hover:underline" href={`/product/${item.sku}`}>{item.name}</Link>
                                 <div className="text-sm opacity-50">
                                   {item.color}
                                 </div>

@@ -6,6 +6,8 @@ import Footer from "~/components/Footer";
 import Carousel from "~/components/Carousel";
 import Collection from "~/components/Collection";
 import Select from "react-tailwindcss-select";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { api } from "~/utils/api";
 import { getSku, getProductData } from "~/lib/product";
 import { useEffect, useState } from "react";
@@ -34,9 +36,8 @@ const ProductPage = ({
   productData: IProductDetail["detail"]["data"]["catalog"]["product"];
 }) => {
   const [error, setError] = useState<string>("");
-  const [state, setState] = useState<{ loading: boolean; submitted: boolean }>({
+  const [state, setState] = useState<{ loading: boolean }>({
     loading: false,
-    submitted: false,
   });
   const [formSelection, setSelection] = useState<{
     color: string | null;
@@ -62,6 +63,7 @@ const ProductPage = ({
 
   const { mutateAsync } = api.cart.add.useMutation();
   const router = useRouter();
+
   const onSubmit = async (data: IAddToCart) => {
     if (!formSelection.color) {
       setError("Please select a color");
@@ -74,8 +76,8 @@ const ProductPage = ({
       return;
     } else {
       try {
-        setState({ loading: true, submitted: false });
-        const response = await mutateAsync(data);
+        setState({ loading: true });
+        await mutateAsync(data);
       } catch (error) {
         if (isTRPCClientError(error)) {
           if (error.data?.code === "UNAUTHORIZED") {
@@ -92,8 +94,17 @@ const ProductPage = ({
         }
       }
     }
-
-    setState({ loading: false, submitted: true });
+    toast.success('Product added to the cart', {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    })
+    setState({ loading: false });
+    setError("");
   };
 
   return (
@@ -104,6 +115,7 @@ const ProductPage = ({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen w-screen flex-col bg-base-200">
+        <ToastContainer />
         <div className="fixed top-0 z-50 flex w-full justify-start px-4 py-3">
           <Header />
         </div>
@@ -254,10 +266,8 @@ const ProductPage = ({
                         name: productData.name,
                       })
                     }
-                    // onFocus={() => setState({ ...state, submitted: false })}
-                    onBlur={() => setState({ ...state, submitted: false })}
                   >
-                    {state.submitted ? "ADDED TO CART" : "ADD TO CART"}
+                    {"ADD TO CART"}
                   </button>
                 </div>
               </div>
