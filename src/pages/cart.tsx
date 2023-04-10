@@ -111,6 +111,7 @@ const Cart = () => {
 };
 
 // no idea how to fix this right now
+// eslint-disable-next-line @typescript-eslint/require-await
 export const getServerSideProps = requireAuth(async (ctx) => {
   return { props: {} };
 });
