@@ -5,7 +5,7 @@ import Header from "~/components/Header";
 import LoginForm from "~/components/LoginForm";
 import type { ILogin } from "~/lib/validation/auth";
 import { type SignInResponse, signIn } from "next-auth/react";
-import { ErrorToast } from "~/components/toast";
+import { ErrorToast } from "~/components/Toast";
 import { useRouter } from "next/router";
 const Login: NextPage = () => {
   const onSubmit = async (
