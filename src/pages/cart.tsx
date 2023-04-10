@@ -1,16 +1,37 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-// import Image from "next/image";
+import { isTRPCClientError } from "~/lib/validation/error";
 import Head from "next/head";
 import Image from "next/image";
 import { api } from "~/utils/api";
 import { requireAuth } from "~/server/requireAuth";
 import Link from "next/link";
-
+import type { IAddToCart } from "~/lib/validation/cart";
+import { useRouter } from "next/router";
 // this page will be client side rendered
 
 const Cart = () => {
   const result = api.cart.view.useQuery();
+  const { mutateAsync } = api.cart.edit.useMutation();
+  const router = useRouter();
+  const onChange =  async (data: IAddToCart) => {
+    try {
+      await mutateAsync(data);
+      await result.refetch();
+    } catch (error) {
+      if (isTRPCClientError(error)) {
+        if (error.data?.code === "UNAUTHORIZED") {
+          await router.push({
+            pathname: "/login",
+            query: {
+              message: "Unauthorize, Please login first.",
+              redirect: router.asPath,
+            },
+          });
+        }
+      }
+    }
+  };
   return (
     <>
       <Head>
@@ -43,7 +64,10 @@ const Cart = () => {
                         <tr key={item.sku + item.color + item.size}>
                           <td>
                             <div className="flex items-center space-x-3">
-                              <Link className="avatar" href={`/product/${item.sku}`}>
+                              <Link
+                                className="avatar"
+                                href={`/product/${item.sku}`}
+                              >
                                 <div className="mask mask-squircle h-16 w-16">
                                   <Image
                                     src={item.fullUrl}
@@ -53,7 +77,12 @@ const Cart = () => {
                                 </div>
                               </Link>
                               <div>
-                                <Link className="font-bold hover:underline" href={`/product/${item.sku}`}>{item.name}</Link>
+                                <Link
+                                  className="font-bold hover:underline"
+                                  href={`/product/${item.sku}`}
+                                >
+                                  {item.name}
+                                </Link>
                                 <div className="text-sm opacity-50">
                                   {item.color}
                                 </div>
@@ -64,7 +93,25 @@ const Cart = () => {
                             </div>
                           </td>
                           <td className="">
-                            {item.qty}
+                            <input
+                              type="number"
+                              className="input-bordered pr-2 input h-10 w-16 rounded-md bg-white text-gray-500"
+                              inputMode="numeric"
+                              min={'1'}
+                              defaultValue={item.qty}
+                              max="100"
+                              onChange={async (e) => {
+                                await onChange({
+                                  sku: item.sku,
+                                  qty: parseInt(e.target.value),
+                                  color: item.color,
+                                  size: item.size,
+                                  price: item.price,
+                                  discountedPrice: item.discountedPrice,
+                                  name: item.name,
+                                })
+                              }}
+                            ></input>
                             {" x "}
                             <div className="inline whitespace-nowrap">
                               <p
@@ -77,7 +124,9 @@ const Cart = () => {
                                 {+item.price.toFixed(2)}
                               </p>
                               {item.discountedPrice != item.price && (
-                                <p className=" inline">{` → ${+item.discountedPrice.toFixed(2)}`}</p>
+                                <p className=" inline">{` → ${+item.discountedPrice.toFixed(
+                                  2
+                                )}`}</p>
                               )}
                             </div>
                           </td>
@@ -87,24 +136,27 @@ const Cart = () => {
                 </tbody>
               </table>
             </div>
-            {result.data?.detail && 
+            {result.data?.detail && (
               <div>
                 <div className="mx-5 mb-2 flex flex-row-reverse text-lg font-bold md:mx-16">{`Subtotal ${
                   +result.data?.detail.sub_total.toFixed(2) || 0
                 } $`}</div>
                 <div
                   className={`mx-5 mb-2 flex flex-row-reverse text-lg font-bold md:mx-16 ${
-                    +result.data?.detail.shipping.toFixed(2) === 0 ? "text-emerald-500" : ""
+                    +result.data?.detail.shipping.toFixed(2) === 0
+                      ? "text-emerald-500"
+                      : ""
                   }`}
                 >{`Shipping ${result.data?.detail.shipping || 0} $`}</div>
                 <div className="mx-5 mb-2 flex flex-row-reverse text-2xl font-bold md:mx-16">{`Total ${
                   +result.data?.detail.total.toFixed(2) || 0
                 } $`}</div>
               </div>
-            }
-            <button className="flex flex-row-reverse btn btn-primary mx-10 mt-5 mb-10">Buy Now</button>
+            )}
+            <button className="btn-primary btn mx-10 mb-10 mt-5 flex flex-row-reverse">
+              Buy Now
+            </button>
           </div>
-
         </div>
         <Footer />
       </main>

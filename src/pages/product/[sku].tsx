@@ -14,19 +14,13 @@ import { useEffect, useState } from "react";
 import type { IProductDetail } from "~/lib/validation/productDetail";
 import type { SelectValue } from "react-tailwindcss-select/dist/components/type";
 import { type IAddToCart } from "~/lib/validation/cart";
-import { TRPCClientError } from "@trpc/client";
-import type { CartRouter } from "~/server/api/routers/cartRouter";
+import { isTRPCClientError } from "~/lib/validation/error";
 import type {
   INewArrivalSchemaList,
   INewArrivalSchema,
 } from "~/lib/validation/newArrival";
 
 //ISR this page for better SEO and performance
-export function isTRPCClientError(
-  cause: unknown
-): cause is TRPCClientError<typeof CartRouter> {
-  return cause instanceof TRPCClientError;
-}
 
 const ProductPage = ({
   productData,
