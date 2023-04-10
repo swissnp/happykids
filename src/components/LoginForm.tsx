@@ -25,8 +25,7 @@ export default function LoginForm({
     mode: "onBlur",
   });
   const router = useRouter();
-
-
+  const { redirect } = router.query;
 
   return (
     <form
@@ -35,15 +34,27 @@ export default function LoginForm({
       onSubmit={handleSubmit(async (data) => {
         const response = await onSubmit(data);
         if (!response) {
-          setError("root.serverError", { message: "Unknown error, please try again later" });
+          setError("root.serverError", {
+            message: "Unknown error, please try again later",
+          });
         } else if (response.ok) {
-          await router.push("/");
+          if (redirect) {
+            await router.push(redirect as string);
+          } else {
+            await router.push("/");
+          }
         } else if (response.status === 401) {
-          setError("root.serverError", { message: "Invalid email or password" });
+          setError("root.serverError", {
+            message: "Invalid email or password",
+          });
         } else if (response.status === 422) {
-          setError("root.serverError", { message: "Invalid data, please recheck your information." });
+          setError("root.serverError", {
+            message: "Invalid data, please recheck your information.",
+          });
         } else {
-          setError("root.serverError", { message: "Unknown error, please try again later" });
+          setError("root.serverError", {
+            message: "Unknown error, please try again later",
+          });
         }
       })}
     >

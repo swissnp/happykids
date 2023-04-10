@@ -16,6 +16,7 @@ export const requireAuth =
           destination: "/login", // login path
           permanent: false,
         },
+        // message: "Unauthorize, Please login first.",
       };
     }
 

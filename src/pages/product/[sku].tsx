@@ -8,34 +8,77 @@ import { getSku, getProductData } from "~/lib/product";
 import Select from "react-tailwindcss-select";
 import { useEffect, useState } from "react";
 import type { SelectValue } from "react-tailwindcss-select/dist/components/type";
-import { useSession } from "next-auth/react";
+import { api } from "~/utils/api";
+import { type IAddToCart } from "~/lib/validation/cart";
+import Collection from "~/components/Collection";
+import { TRPCClientError } from "@trpc/client";
+import type { CartRouter } from "~/server/api/routers/cartRouter";
+import type {
+  INewArrivalSchemaList,
+  INewArrivalSchema,
+} from "~/lib/validation/newArrival";
+import { useRouter } from "next/router";
 
 //ISR this page for better SEO and performance
+export function isTRPCClientError(
+  cause: unknown
+): cause is TRPCClientError<typeof CartRouter> {
+  return cause instanceof TRPCClientError;
+}
 
 const ProductPage = ({
   productData,
+  res,
 }: {
+  res: Array<INewArrivalSchemaList>;
   productData: IProductDetail["detail"]["data"]["catalog"]["product"];
 }) => {
+  const [error, setError] = useState<string>('');
   const [formSelection, setSelection] = useState<{
     color: string | null;
     size: SelectValue | null;
     sizeValue: string | null;
-  }>({ color: null, size: null , sizeValue: null});
+    qty: number;
+  }>({ color: null, size: null, sizeValue: null, qty: 1 });
 
   // this will set the state when there is only one color
   useEffect(() => {
-  productData.options.map((option) => {
-    if (option.title === "Color") {
-      if (option.selections.length === 1){ // if there is only one color, set it to state
-        setSelection({
-          ...formSelection, // destructuring the old state
-          color: option?.selections[0]?.value || null, // set color to new state
-        })
-    }}
-  })}, [productData.options]) // dont need formSelection because we need to set it only once when the page is loaded and not when the state is changed
+    productData.options.map((option) => {
+      if (option.title === "Color") {
+        if (option.selections.length === 1) {
+          // if there is only one color, set it to state
+          setSelection({
+            ...formSelection, // destructuring the old state
+            color: option?.selections[0]?.description || null, // set color to new state
+          });
+        }
+      }
+    });
+  }, [productData.options]); // dont need formSelection because we need to set it only once when the page is loaded and not when the state is changed
 
-  
+  const { mutateAsync } = api.cart.add.useMutation();
+  const router = useRouter();
+  console.log(error);
+  const onSubmit = async (data: IAddToCart) => {
+    try {
+      const response = await mutateAsync(data);
+    } catch (error) {
+      if (isTRPCClientError(error)) {
+        if (error.data?.code === "UNAUTHORIZED") {
+          await router.push({
+            pathname: "/login",
+            query: {
+              message: "Unauthorize, Please login first.",
+              redirect: router.asPath,
+            },
+          });
+        } else {
+          setError(error.message);
+        }
+      }
+    }
+  };
+
   return (
     <>
       <Head>
@@ -47,10 +90,10 @@ const ProductPage = ({
         <div className="fixed top-0 z-50 flex w-full justify-start px-4 py-3">
           <Header />
         </div>
-        <div className="relative px-4 mt-24 flex flex-col justify-center">
-          <div className="flex flex-col overflow-hidden rounded-xl bg-white shadow-2xl">
+        <div className="relative mt-24 flex flex-col justify-center px-4">
+          <div className="mb-5 flex flex-col overflow-hidden rounded-xl bg-white shadow-2xl">
             <div className="hero bg-base-100">
-              <div className="hero-content w-full flex-col p-0 md:flex-row md:px-5 md:py-5">
+              <div className="hero-content w-full flex-col p-0 md:flex-row md:px-5 md:py-10">
                 <div className="relative left-0 h-[30rem] w-full overflow-hidden md:w-[30rem] md:rounded-3xl md:align-middle md:drop-shadow-xl">
                   {productData ? (
                     <Image
@@ -65,11 +108,25 @@ const ProductPage = ({
                   )}
                 </div>
                 <div className="px-10 py-10 md:w-1/2 md:px-10">
-                  <h1 className="pb-6 text-5xl font-bold">
+                  <h1 className="pb-3 text-5xl font-bold">
                     {productData?.name}
                   </h1>
-                  <p className="pb-6">{productData?.description}</p>
-                  <div className="flex flex-row gap-5 pb-6">
+                  <p className="pb-3">{productData?.description}</p>
+                  <div className="whitespace-nowrap pb-3">
+                    <p
+                      className={`${
+                        productData.discountedPrice != productData.price
+                          ? "line-through decoration-error"
+                          : ""
+                      } inline`}
+                    >
+                      {productData.formattedPrice}
+                    </p>
+                    {productData.discountedPrice != productData.price && (
+                      <p className=" inline">{` → ${productData.formattedDiscountedPrice}`}</p>
+                    )}
+                  </div>
+                  <div className="mb-5 flex flex-wrap gap-x-5">
                     {productData.options.map((option) => {
                       if (option.title === "Color") {
                         if (option.selections.length > 1) {
@@ -87,7 +144,7 @@ const ProductPage = ({
                                       backgroundColor: selection.value, // shouldnt do this but tailwind cant change class after build time
                                       // borderColor: selection.value,
                                     }}
-                                    value={selection.value}
+                                    value={selection.description}
                                     onClick={(e) => {
                                       setSelection({
                                         ...formSelection, // destructuring the old state
@@ -104,17 +161,20 @@ const ProductPage = ({
                         }
                       } else {
                         return (
-                          <div key={option.title} className="mb-2 w-40">
+                          <div key={option.title} className="mb-1 h-20 w-40">
                             <p className="mb-1">Size</p>
                             <Select
                               primaryColor={"blue"}
                               value={formSelection?.size}
                               onChange={(value: SelectValue) => {
-                                const size = value as { value: string; label: string}
+                                const size = value as {
+                                  value: string;
+                                  label: string;
+                                };
                                 setSelection({
                                   ...formSelection, // destructuring the old state
                                   size: value, // set color to new state
-                                  sizeValue : size.value
+                                  sizeValue: size.value,
                                 });
                               }}
                               options={option.selections.map((selection) => {
@@ -128,10 +188,38 @@ const ProductPage = ({
                         );
                       }
                     })}
+                    <div className="mb-1 h-20 w-40">
+                      <p className="mb-1">Quantity</p>
+                      <input
+                        type="number"
+                        className="input-bordered input h-10 w-20 rounded-md bg-white text-gray-500"
+                        inputMode="numeric"
+                        min="1"
+                        defaultValue={"1"}
+                        max="100"
+                        onChange={(e) => {
+                          setSelection({
+                            ...formSelection,
+                            qty: parseInt(e.target.value),
+                          });
+                        }}
+                      ></input>
+                    </div>
+                    {error && (<p className="text-sm">{error}</p>)}
                   </div>
                   <button
-                    className="btn-primary btn"
-                    onClick={() => console.log(formSelection)}
+                    className="btn-primary btn relative"
+                    onClick={() =>
+                      onSubmit({
+                        sku: productData.sku,
+                        qty: formSelection.qty,
+                        color: formSelection.color || "default",
+                        size: formSelection.sizeValue || "default",
+                        price: productData.price,
+                        discountedPrice: productData.discountedPrice,
+                        name: productData.name,
+                      })
+                    }
                   >
                     ADD TO CART
                   </button>
@@ -151,8 +239,11 @@ const ProductPage = ({
               })}
             </div>
           </div>
-          <div className="flex w-full flex-row items-center justify-center rounded-xl bg-base-100 drop-shadow-lg">
-            {/* <h1 className="my-10 text-4xl font-bold ">New Arrivals</h1> */}
+          <div className="flex w-full flex-col  items-center justify-center rounded-xl bg-base-100 drop-shadow-lg">
+            <h1 className="my-10 text-4xl font-bold ">Related Products</h1>
+            <div className="w-full overflow-scroll">
+              <Collection response={res} />
+            </div>
           </div>
         </div>
         <Footer />
@@ -171,10 +262,21 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }: { params: { sku: string } }) {
   const productData = await getProductData(params.sku);
+  const res = await fetch(
+    "https://skillkamp-api.com/v1/api/products/new_arrivals"
+  )
+    .then((response) => response.json()) // convert json string to object
+    .then((data: INewArrivalSchema) => {
+      return data.detail.data.catalog.category.productsWithMetaData.list;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 
   return {
     props: {
       productData,
+      res,
     },
     revalidate: 60,
   };

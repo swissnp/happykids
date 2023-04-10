@@ -5,7 +5,8 @@ import Header from "~/components/Header";
 import LoginForm from "~/components/LoginForm";
 import type { ILogin } from "~/lib/validation/auth";
 import { type SignInResponse, signIn } from "next-auth/react";
-
+import ErrorToast from "~/components/toast";
+import { useRouter } from "next/router";
 const Login: NextPage = () => {
 
   const onSubmit = async (
@@ -14,6 +15,9 @@ const Login: NextPage = () => {
     const response = await signIn("credentials", { ...data, redirect: false });
     return response;
   };
+
+  const router = useRouter();
+  const { message } = router.query;
 
   return (
     <>
@@ -24,9 +28,11 @@ const Login: NextPage = () => {
       </Head>
 
       <main className="font-kanit flex min-h-screen flex-col bg-base-200 tabular-nums">
-        <div className="fixed top-0 z-50 flex w-full justify-start px-4 py-3">
+        <div className="fixed top-0 z-40 flex w-full justify-start px-4 py-3">
           <Header />
         </div>
+        <ErrorToast message={message as string}/>
+        
         <section className="font-kanit mt-16 flex flex-col items-center bg-none px-0 py-10 font-light text-neutral-500">
           <div className="flex">
             <div className="z-10 h-90 l:hidden relative bottom-3 right-0 w-60 -mx-10 hidden sm:flex">

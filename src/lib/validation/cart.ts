@@ -1,7 +1,7 @@
 import * as z from "zod";
 // import { Option } from "react-tailwindcss-select/dist/components/type";
 
-const addToCartSchema = z.object({
+export const addToCartSchema = z.object({
     sku: z.string(),
     name: z.string(),
     price: z.number(),

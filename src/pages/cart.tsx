@@ -39,7 +39,7 @@ const Cart = () => {
                   {result.data?.detail.cart_list &&
                     result.data?.detail.cart_list.map((item) => {
                       return (
-                        <tr key={item.sku}>
+                        <tr key={item.sku + item.color + item.size}>
                           <td>
                             <div className="flex items-center space-x-3">
                               <div className="avatar">
@@ -73,10 +73,10 @@ const Cart = () => {
                                     : ""
                                 } inline`}
                               >
-                                {item.price}
+                                {+item.price.toFixed(2)}
                               </p>
                               {item.discountedPrice != item.price && (
-                                <p className=" inline">{` → ${item.discountedPrice}`}</p>
+                                <p className=" inline">{` → ${+item.discountedPrice.toFixed(2)}`}</p>
                               )}
                             </div>
                           </td>
@@ -89,20 +89,21 @@ const Cart = () => {
             {result.data?.detail && 
               <div>
                 <div className="mx-5 mb-2 flex flex-row-reverse text-lg font-bold md:mx-16">{`Subtotal ${
-                  result.data?.detail.sub_total || 0
+                  +result.data?.detail.sub_total.toFixed(2) || 0
                 } $`}</div>
                 <div
                   className={`mx-5 mb-2 flex flex-row-reverse text-lg font-bold md:mx-16 ${
-                    result.data?.detail.shipping === 0 ? "text-emerald-500" : ""
+                    +result.data?.detail.shipping.toFixed(2) === 0 ? "text-emerald-500" : ""
                   }`}
                 >{`Shipping ${result.data?.detail.shipping || 0} $`}</div>
                 <div className="mx-5 mb-2 flex flex-row-reverse text-2xl font-bold md:mx-16">{`Total ${
-                  result.data?.detail.total || 0
+                  +result.data?.detail.total.toFixed(2) || 0
                 } $`}</div>
               </div>
             }
             <button className="flex flex-row-reverse btn btn-primary mx-10 mt-5 mb-10">Buy Now</button>
           </div>
+
         </div>
         <Footer />
       </main>
