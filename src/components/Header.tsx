@@ -9,7 +9,6 @@ const Header = () => {
   const { data: session } = useSession();
   const cart = api.cart.view.useQuery().data?.detail.cart_list;
 
-
   return (
     <div className="navbar w-full rounded-2xl bg-base-100 drop-shadow-lg">
       <div className="navbar-start">
@@ -35,7 +34,7 @@ const Header = () => {
             className="dropdown-content menu rounded-box menu-compact mt-3 w-52 bg-base-100 p-2 shadow"
           >
             <li>
-              <a>Shop Collection</a>
+              <Link href="/collection">Shop Collection</Link>
             </li>
             <li>
               <a className="justify-between">Our Story</a>
@@ -52,7 +51,7 @@ const Header = () => {
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
           <li>
-            <a>Shop Collection</a>
+            <Link href="/collection">Shop Collection</Link>
           </li>
           <li>
             <a>Our Story</a>
