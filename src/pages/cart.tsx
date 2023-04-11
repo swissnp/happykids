@@ -21,7 +21,9 @@ const Cart = () => {
   const editMutation = api.cart.edit.useMutation();
   const deleteMutation = api.cart.delete.useMutation();
   const checkoutMutation = api.cart.checkout.useMutation();
+
   const router = useRouter();
+
   const onChange = async (data: IAddToCart): Promise<IViewCartResponse> => {
     const response = await editMutation.mutateAsync(data);
     await result.refetch();
@@ -32,14 +34,9 @@ const Cart = () => {
     await result.refetch();
   };
   const checkout = async () => {
-    // const stripe = await stripePromise;
     const response = await checkoutMutation.mutateAsync();
-    await router.push(response.url || '');
-    // const { error } = await stripe?.redirectToCheckout({
-    //   sessionId: response.sessionId,
-    // });
-
-  }
+    await router.push(response.url || "");
+  };
 
   useEffect(() => {
     // Check to see if this is a redirect back from Checkout
@@ -187,16 +184,12 @@ const Cart = () => {
                 } $`}</div>
               </div>
             )}
-            <button className="btn-primary btn mx-10 mb-10 mt-5 flex flex-row-reverse" onClick={()=> checkout()}>
+            <button
+              className="btn-primary btn mx-10 mb-10 mt-5 flex flex-row-reverse"
+              onClick={() => checkout()}
+            >
               Buy Now
             </button>
-            <form action="/api/checkout_sessions" method="POST">
-              <section>
-                <button type="submit" role="link" className="btn">
-                  Checkout
-                </button>
-              </section>
-            </form>
           </div>
         </div>
         <Footer />

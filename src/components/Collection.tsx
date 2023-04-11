@@ -8,6 +8,7 @@ import Link from "next/link";
 const Collection = ({response}: {response: Array<INewArrivalSchemaList> }) => {
   return (
     <div className="max-w-5 mx-5 flex flex-col items-center gap-x-4 pb-5 sm:flex-row ">
+      
       {response.map((item: INewArrivalSchemaList) => {
         return (
           <div

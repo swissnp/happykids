@@ -16,6 +16,7 @@
     "@trpc/next": "^10.19.1",
     "@trpc/react-query": "^10.19.1",
     "@trpc/server": "^10.19.1",
+    "antd": "^5.4.1",
     "daisyui": "^2.51.5",
     "dayjs": "^1.11.7",
     "next": "^13.3.0",
