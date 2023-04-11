@@ -1,28 +1,30 @@
-# Create T3 App
+# HappyKids
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+This is built with `Next.js`, `React.js`, `Tailwindcss`, `tRPC`
 
-## What's next? How do I make an app with this?
+Deployment: https://happierkids.vercel.app/
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+## Feature Requirements
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+✅ หน้าแรกสําหรับแสดงรายการสินค้า พร้อมตัวกรองหมวดหมู่สินค้า
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+✅ หน้าข้อมูลผลิตภัณฑ์
 
-## Learn More
+✅ ตะกร้าสินค้าและปุ่มชำระเงิน
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+✅ การแสดงบนชาระเงิน 
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+✅ หน้าชำระเงิน (Integretion with stripe)
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+⚪️ หน้าชำระเงินสําเร็จ
 
-## How do I deploy this?
+## Optional Features
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+✅ Integration with Stripe (with proper backend)
+
+✅ Incremental Static Rendering (to imporve performance)
+
+⚪️ Proper Email Subscription with backend 
+
+⚪️ Installable (Progressive Web App)
+
