@@ -174,8 +174,8 @@ export const CartRouter = createTRPCRouter({
           },
         ],
         mode: "payment",
-        success_url: `${getBaseUrl()}/?success=true`,
-        cancel_url: `${getBaseUrl()}/?canceled=true`,
+        success_url: `${getBaseUrl()}/cart/success`,
+        cancel_url: `${getBaseUrl()}/cart/canceled`,
       });
       return session;
     }),

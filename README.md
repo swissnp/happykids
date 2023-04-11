@@ -12,11 +12,11 @@ Deployment: https://happierkids.vercel.app/
 
 ✅ ตะกร้าสินค้าและปุ่มชำระเงิน
 
-✅ การแสดงบนชาระเงิน 
+✅ การแสดงบนชาระเงิน
 
 ✅ หน้าชำระเงิน (Integretion with stripe)
 
-⚪️ หน้าชำระเงินสําเร็จ
+✅ หน้าชำระเงินสําเร็จ
 
 ## Optional Features
 
@@ -24,7 +24,6 @@ Deployment: https://happierkids.vercel.app/
 
 ✅ Incremental Static Rendering (to imporve performance)
 
-⚪️ Proper Email Subscription with backend 
+⚪️ Proper Email Subscription with backend
 
 ⚪️ Installable (Progressive Web App)
-
