@@ -188,7 +188,7 @@ const ShopCollection = () => {
         );
       });
   };
-  
+
   return (
     <>
       <Head>
@@ -201,12 +201,12 @@ const ShopCollection = () => {
           <Header />
         </div>
         <div className="relative mx-4 mt-24 flex flex-col justify-center  gap-6 lg:flex-row">
-          <div className="flex h-fit w-full flex-col overflow-hidden rounded-xl bg-base-100 px-5 py-10 shadow-2xl lg:w-1/4">
+          <div className="flex h-fit w-full flex-col overflow-hidden rounded-xl bg-base-100 px-6 py-10 shadow-2xl lg:w-1/4">
             <h1 className="mb-3 text-2xl font-bold">Filters</h1>
             {filter ? (
               <div className="mb-5 grid grid-cols-1 sm:grid-cols-2 sm:gap-x-5 lg:grid-cols-1">
                 <div className="w-full">
-                  <h4 className="text-md">Prices</h4>
+                  <h4 className="text-md mb-2">Prices</h4>
                   <div className="mx-4">
                     <Controller
                       control={control}
@@ -225,8 +225,8 @@ const ShopCollection = () => {
                     />
                   </div>
                 </div>
-                <div className="mb-2 w-full">
-                  <h4 className="text-md">Color</h4>
+                <div className="mb-3 w-full">
+                  <h4 className="text-md mb-2">Color</h4>
                   <Controller
                     control={control}
                     name="OPTION_COLOR"
@@ -244,8 +244,8 @@ const ShopCollection = () => {
                     )}
                   />
                 </div>
-                <div className="mb-2 w-full">
-                  <h4 className="text-md">Category</h4>
+                <div className="mb-3 w-full">
+                  <h4 className="text-md mb-2">Category</h4>
                   <Controller
                     control={control}
                     name="CATEGORY"
@@ -260,8 +260,8 @@ const ShopCollection = () => {
                     )}
                   />
                 </div>
-                <div className="mb-2 w-full">
-                  <h4 className="text-md">Size</h4>
+                <div className="mb-3 w-full">
+                  <h4 className="text-md mb-2">Size</h4>
                   <Controller
                     control={control}
                     name="OPTION_LIST"
