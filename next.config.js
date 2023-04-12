@@ -194,7 +194,7 @@ const withPWA = require('next-pwa')({
     {
       urlPattern: ({ url }) => {
         const isSameOrigin = self.origin === url.origin
-        return true
+        return !isSameOrigin
       },
       handler: 'NetworkFirst',
       options: {
