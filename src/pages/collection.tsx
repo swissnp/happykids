@@ -54,7 +54,6 @@ const ShopCollection = () => {
   const {
     handleSubmit,
     control,
-    getValues,
     formState: { isSubmitting, isSubmitted },
   } = useForm({
     defaultValues: {

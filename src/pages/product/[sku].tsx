@@ -10,7 +10,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { api } from "~/utils/api";
 import { getSku, getProductData } from "~/lib/product";
-import { useEffect, useState, createContext } from "react";
+import { useEffect, useState } from "react";
 import type { IProductDetail } from "~/lib/validation/productDetail";
 import type { SelectValue } from "react-tailwindcss-select/dist/components/type";
 import { type IAddToCart } from "~/lib/validation/cart";
