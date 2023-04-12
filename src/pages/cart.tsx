@@ -93,7 +93,7 @@ const Cart = () => {
         <meta name="description" content="Created by Nopporn Lekuthai" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex min-h-screen w-screen flex-col bg-base-200">
+      <main className="flex min-h-screen w-screen flex-col bg-base-200 overflow-y-scroll">
         <div className="fixed top-0 z-50 flex w-full justify-start px-4 py-3">
           <Header />
         </div>

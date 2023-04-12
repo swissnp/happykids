@@ -32,7 +32,7 @@ const Register: NextPage = () => {
         <link rel="icon" href="/fav-sw.jpg" />
       </Head>
 
-      <main className="font-kanit flex min-h-screen flex-col bg-base-200 tabular-nums">
+      <main className="font-kanit flex min-h-screen flex-col bg-base-200 tabular-nums overflow-y-scroll">
         <div className="fixed top-0 z-50 flex w-full justify-start px-4 py-3">
           <Header />
         </div>
