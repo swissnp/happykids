@@ -29,7 +29,7 @@ const Contact = () => {
                 </div>
                 <div className="w-full px-10 pt-10 md:py-10">
                   <h1 className="text-5xl font-bold text-center my-5">Contact</h1>
-                  <div className="my-8 grid grid-cols-1 lg:grid-cols-3">
+                  <div className="my-8 gap-6 grid grid-cols-1 md:grid-cols-3">
                     <div className="prose w-full text-center text-lg">
                       <b>{"VISIT US"}</b>
                       <br />
