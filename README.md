@@ -21,12 +21,12 @@ Deployment: https://happierkids.vercel.app/
 ## Optional Features
 
 ✅ Custom Backend
-If you wondering why we need to implement our custom backend for this project
-
-Since we need to implement our own backend to handle the stripe integration and authorization with the exsisting Skillkamp api.
 
 Here is the schemtics of the Login flow:
 ![image](https://raw.githubusercontent.com/swissnp/happykids/a6cec56e09e48b790da4f134c4c1afadffae3a92/LoginSchema.png)
+If you wondering why we need to implement our custom backend for this project
+
+Since we need to implement our own backend to handle the stripe integration and authorization with the exsisting Skillkamp api.
 Learn more: please visit `Inregration with Stripe` section below.👇🏻
 <details>
   <summary>✅ Integration with Stripe (with proper backend)</summary>
