@@ -7,6 +7,7 @@ import type {
 import { isTRPCClientError } from "~/lib/validation/error";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { signOut } from "next-auth/react"; 
 const CartInputField = ({
   onChange,
   item,
@@ -42,6 +43,7 @@ const CartInputField = ({
           setIsError(true);
           if (isTRPCClientError(error)) {
             if (error.data?.code === "UNAUTHORIZED") {
+              await signOut({ redirect: false });
               await router.push({
                 pathname: "/login",
                 query: {
