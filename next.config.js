@@ -1,10 +1,11 @@
+
 /**
  * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.
  * This is especially useful for Docker builds.
  */
-!process.env.SKIP_ENV_VALIDATION && (await import("./src/env.mjs"));
+// !process.env.SKIP_ENV_VALIDATION && (await import("./src/env.mjs"));
 
-/** @type {import("next").NextConfig} */
+
 const config = {
   reactStrictMode: true,
   images: {domains:['skillkamp-api.com', 'placeholder.com']},
@@ -19,21 +20,14 @@ const config = {
     defaultLocale: "en",
   },
 };
-export default config;
 
+// export default config;
 
-/** @type {import('next').NextConfig} */
-
-const nextConfig = {
-  reactStrictMode: true,
-}
-
-import PWA from 'next-pwa'
-const withPWA = PWA({
+const withPWA = require('next-pwa')({
   dest: 'public',
   disable: process.env.NODE_ENV === 'development',
 })
 
 module.exports = withPWA({
-  nextConfig
+  config
 })

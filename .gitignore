@@ -43,3 +43,6 @@ yarn-error.log*
 src/pages/log.json
 src/pages/product.json
 .gitignore
+**/public/workbox-*.js
+**/public/sw.js
+**/public/worker-*.js
