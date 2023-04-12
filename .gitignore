@@ -46,3 +46,5 @@ src/pages/product.json
 **/public/workbox-*.js
 **/public/sw.js
 **/public/worker-*.js
+next.config.js
+public/sw.js.map
