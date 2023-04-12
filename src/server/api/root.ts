@@ -6,7 +6,7 @@ import { CartRouter } from "~/server/api/routers/cartRouter";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-//   example: exampleRouter,
+  //   example: exampleRouter,
   cart: CartRouter,
 });
 

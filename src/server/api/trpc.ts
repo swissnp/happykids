@@ -22,7 +22,7 @@ import { getServerAuthSession } from "~/server/auth";
 
 type CreateContextOptions = {
   session: Session | null;
-  token: JWT | null
+  token: JWT | null;
 };
 
 /**
@@ -38,7 +38,7 @@ type CreateContextOptions = {
 const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
     session: opts.session,
-    token: opts.token
+    token: opts.token,
     // prisma,
   };
 };
@@ -54,11 +54,11 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
 
   // Get the session from the server using the getServerSession wrapper function
   const session = await getServerAuthSession({ req, res });
-  const token = await getToken({ req }) // all cart request need auth so we just include token in every request
+  const token = await getToken({ req }); // all cart request need auth so we just include token in every request
 
   return createInnerTRPCContext({
     session,
-    token
+    token,
   });
 };
 
@@ -120,7 +120,7 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
   return next({
     ctx: {
       // infers the `session` as non-nullable
-      token : ctx.token?.account.access_token,
+      token: ctx.token?.account.access_token,
       session: { ...ctx.session, user: ctx.session.user },
     },
   });

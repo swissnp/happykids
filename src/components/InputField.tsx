@@ -1,4 +1,3 @@
-
 import { type FieldError } from "react-hook-form";
 const InputField = ({
   label,
@@ -6,21 +5,21 @@ const InputField = ({
   inputtype,
   name,
   form,
-  error
+  error,
 }: {
   label: string;
   placeholder: string;
-  inputtype: "text" | "number" | 'email' | 'password';
+  inputtype: "text" | "number" | "email" | "password";
   name?: string;
-  form?: object
-  error?: FieldError
+  form?: object;
+  error?: FieldError;
 }) => {
   return (
-    <div className="mb-4 h-auto align-top w-full">
+    <div className="mb-4 h-auto w-full align-top">
       <div className="mb-2 inline-block overflow-hidden whitespace-nowrap text-right align-middle leading-snug">
         <label
           title={label}
-          className="mr-2 ml-px cursor-default text-neutral-700"
+          className="ml-px mr-2 cursor-default text-neutral-700"
         >
           {label}
         </label>

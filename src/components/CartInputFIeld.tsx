@@ -7,22 +7,21 @@ import type {
 import { isTRPCClientError } from "~/lib/validation/error";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { error } from "console";
-import { isError } from "@tanstack/react-query";
 const CartInputField = ({
   onChange,
   item,
-  ...props
 }: {
   onChange: (data: IAddToCart) => Promise<IViewCartResponse>;
   item: ICartItem;
 }) => {
-    const router = useRouter();
-    const [isError,setIsError] = useState(false);
+  const router = useRouter();
+  const [isError, setIsError] = useState(false);
   return (
     <input
       type="number"
-      className={`input-bordered input mr-1 h-10 w-16 rounded-md bg-white pr-2 inline text-gray-500 ${isError ? 'input-error' : ''}` }
+      className={`input-bordered input mr-1 inline h-10 w-16 rounded-md bg-white pr-2 text-gray-500 ${
+        isError ? "input-error" : ""
+      }`}
       inputMode="numeric"
       min="1"
       defaultValue={item.qty}
@@ -38,9 +37,9 @@ const CartInputField = ({
             discountedPrice: item.discountedPrice,
             name: item.name,
           });
-          setIsError(false)
+          setIsError(false);
         } catch (error) {
-            setIsError(true);
+          setIsError(true);
           if (isTRPCClientError(error)) {
             if (error.data?.code === "UNAUTHORIZED") {
               await router.push({

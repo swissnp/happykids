@@ -27,9 +27,9 @@ const Cart = () => {
   const router = useRouter();
 
   const onChange = async (data: IAddToCart): Promise<IViewCartResponse> => {
-      const response = await editMutation.mutateAsync(data);
-      await result.refetch();
-      return response;
+    const response = await editMutation.mutateAsync(data);
+    await result.refetch();
+    return response;
   };
   const removeItem = async (data: IAddToCart) => {
     try {

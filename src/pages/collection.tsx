@@ -188,7 +188,7 @@ const ShopCollection = () => {
         );
       });
   };
-  
+
   return (
     <>
       <Head>

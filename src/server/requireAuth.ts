@@ -4,11 +4,7 @@ import { authOptions } from "./auth";
 
 export const requireAuth =
   (func: GetServerSideProps) => async (ctx: GetServerSidePropsContext) => {
-    const session = await getServerSession(
-      ctx.req,
-      ctx.res,
-      authOptions
-    );
+    const session = await getServerSession(ctx.req, ctx.res, authOptions);
 
     if (!session) {
       return {

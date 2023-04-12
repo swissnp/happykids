@@ -10,20 +10,17 @@ const Register: NextPage = () => {
   const mergeName = (data: ISignUp): IRequestSignUp => {
     const { firstname, lastname, ...rest } = data;
     return { fullname: `${firstname} ${lastname}`, ...rest };
-  }
+  };
 
   const onSubmit = async (data: ISignUp) => {
     const mergedData = mergeName(data);
-    const result = await fetch(
-      "https://skillkamp-api.com/v1/api/auth/signup",
-      {
-        method: "POST",
-        body: JSON.stringify(mergedData),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      }
-    );
+    const result = await fetch("https://skillkamp-api.com/v1/api/auth/signup", {
+      method: "POST",
+      body: JSON.stringify(mergedData),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    });
     return result;
   };
 
@@ -41,7 +38,7 @@ const Register: NextPage = () => {
         </div>
         <section className="font-kanit mt-16 flex flex-col items-center bg-none px-0 py-10 font-light text-neutral-500">
           <div className="flex">
-            <div className="z-10 h-90 l:hidden relative bottom-0 right-0 w-48 -mx-10 hidden md:flex">
+            <div className="h-90 l:hidden relative bottom-0 right-0 z-10 -mx-10 hidden w-48 md:flex">
               <Image
                 className="object-contain object-right-bottom"
                 src={"/she_with_file.png"}
@@ -50,13 +47,11 @@ const Register: NextPage = () => {
                 fill
               />
             </div>
-            <div className="flex w-full flex-col overflow-hidden rounded-2xl bg-white leading-5 text-neutral-500 shadow-xl m-5">
+            <div className="m-5 flex w-full flex-col overflow-hidden rounded-2xl bg-white leading-5 text-neutral-500 shadow-xl">
               <div className="font-kanit relative flex h-60 grow flex-col items-start justify-center bg-primary-focus px-16 py-8 font-light leading-5 text-white">
                 <div className="flex text-white">
                   <div className="flex-nowrap">
-                    <h2 className="text-3xl font-bold">
-                      Register
-                    </h2>
+                    <h2 className="text-3xl font-bold">Register</h2>
                     <p>Begin a splendid journey with us</p>
                   </div>
                 </div>

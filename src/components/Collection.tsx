@@ -1,14 +1,15 @@
 import React from "react";
-import type {
-  INewArrivalSchemaList,
-} from "../lib/validation/newArrival";
+import type { INewArrivalSchemaList } from "../lib/validation/newArrival";
 import Carousel from "./Carousel";
 import Link from "next/link";
 // new arrivals component this will be used in home page
-const Collection = ({response}: {response: Array<INewArrivalSchemaList> }) => {
+const Collection = ({
+  response,
+}: {
+  response: Array<INewArrivalSchemaList>;
+}) => {
   return (
     <div className="max-w-5 mx-5 flex flex-col items-center gap-x-4 pb-5 sm:flex-row ">
-      
       {response.map((item: INewArrivalSchemaList) => {
         return (
           <div
@@ -16,7 +17,11 @@ const Collection = ({response}: {response: Array<INewArrivalSchemaList> }) => {
             key={item.sku}
           >
             <figure>
-              <Carousel mediaList={item.media} sku={item.sku} className="w-80 h-80"/>
+              <Carousel
+                mediaList={item.media}
+                sku={item.sku}
+                className="h-80 w-80"
+              />
             </figure>
             <div className="card-body">
               <h2 className="card-title">
@@ -41,9 +46,8 @@ const Collection = ({response}: {response: Array<INewArrivalSchemaList> }) => {
               </div>
               <div className="card-actions justify-end">
                 {/* <button className="btn-secondary btn">Details</button> */}
-                <Link 
-                href={`/product/${item.sku}`}
-                  
+                <Link
+                  href={`/product/${item.sku}`}
                   className={`btn-primary btn ${
                     item.isInStock === false ? "btn-disabled" : ""
                   }`}

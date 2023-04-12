@@ -24,7 +24,7 @@ const Home = ({ res }: { res: Array<INewArrivalSchemaList> }) => {
           <div className="flex w-full overflow-hidden rounded-xl shadow-2xl">
             <div className="hero bg-base-100">
               <div className="hero-content w-full max-w-none flex-col-reverse px-0 py-0 md:flex-row">
-                <div className="relative left-0 h-[35rem] w-full md:w-1/2 overflow-hidden">
+                <div className="relative left-0 h-[35rem] w-full overflow-hidden md:w-1/2">
                   <Image
                     alt="banner"
                     src="/Banner1.png"
@@ -33,28 +33,30 @@ const Home = ({ res }: { res: Array<INewArrivalSchemaList> }) => {
                     className="z-10 object-cover object-right-top"
                   />
                 </div>
-                <div className="px-10 py-10 w-full md:w-1/2">
-                  <h1 className=" text-5xl font-bold">
-                    Happier Kids
-                  </h1>
+                <div className="w-full px-10 py-10 md:w-1/2">
+                  <h1 className=" text-5xl font-bold">Happier Kids</h1>
                   <p className="py-6">
                     Provident cupiditate voluptatem et in. Quaerat fugiat ut
                     assumenda excepturi exercitationem quasi. In deleniti eaque
                     aut repudiandae et a id nisi.
                   </p>
-                  <Link className="btn-primary btn" href= '/collection'>Explore</Link>
+                  <Link className="btn-primary btn" href="/collection">
+                    Explore
+                  </Link>
                 </div>
               </div>
             </div>
           </div>
           <div className="flex w-full flex-col  items-center justify-center rounded-xl bg-base-100 drop-shadow-lg">
             <h1 className="my-10 text-4xl font-bold ">New Arrivals</h1>
-            <div className="w-full pb-5 overflow-x-scroll">
+            <div className="w-full overflow-x-scroll pb-5">
               <Collection response={res} />
             </div>
-            <div className="w-full flex mb-5 place-content-center">
-              <Link className="btn-secondary btn" href='/collection'>View All</Link>
-              </div>
+            <div className="mb-5 flex w-full place-content-center">
+              <Link className="btn-secondary btn" href="/collection">
+                View All
+              </Link>
+            </div>
           </div>
         </div>
         <Footer />

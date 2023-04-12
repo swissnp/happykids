@@ -9,24 +9,22 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
 import z from "zod";
 
 export const CartRouter = createTRPCRouter({
-  view: protectedProcedure
-    .input(z.null())
-    .query(async ({ ctx }) => {
-      const token = ctx.token || "";
-      console.log(token);
-      const response = await fetch("https://skillkamp-api.com/v1/api/cart", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((response) => response.json())
-        .then((data: IViewCartResponse) => {
-          return data;
-        });
-      return response;
-    }),
+  view: protectedProcedure.input(z.null()).query(async ({ ctx }) => {
+    const token = ctx.token || "";
+    console.log(token);
+    const response = await fetch("https://skillkamp-api.com/v1/api/cart", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data: IViewCartResponse) => {
+        return data;
+      });
+    return response;
+  }),
   add: protectedProcedure
     .input(addToCartSchema)
     .mutation(async ({ input, ctx }) => {

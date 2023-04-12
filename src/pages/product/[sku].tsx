@@ -21,8 +21,6 @@ import type {
 } from "~/lib/validation/newArrival";
 //ISR this page for better SEO and performance
 
-
-
 const ProductPage = ({
   productData,
   res,
@@ -42,8 +40,6 @@ const ProductPage = ({
     qty: number;
   }>({ color: null, size: null, sizeValue: null, qty: 1 });
 
-  
-
   // this will set the state when there is only one color
   useEffect(() => {
     productData.options.map((option) => {
@@ -61,7 +57,6 @@ const ProductPage = ({
 
   const { mutateAsync } = api.cart.add.useMutation();
   const router = useRouter();
-
 
   const onSubmit = async (data: IAddToCart) => {
     if (!formSelection.color) {
@@ -93,7 +88,7 @@ const ProductPage = ({
         }
       }
     }
-    toast.success('Product added to the cart', {
+    toast.success("Product added to the cart", {
       position: "top-center",
       autoClose: 3000,
       hideProgressBar: false,
@@ -101,7 +96,7 @@ const ProductPage = ({
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
-    })
+    });
     setState({ loading: false });
     setError("");
   };
@@ -109,7 +104,7 @@ const ProductPage = ({
   return (
     <>
       <Head>
-        <title>{productData.name + ' - HappyKids'}</title>
+        <title>{productData.name + " - HappyKids"}</title>
         <meta name="description" content="Created by Nopporn Lekuthai" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -161,92 +156,92 @@ const ProductPage = ({
                     )}
                   </div>
                   <div className="mb-5">
-                    <div className="flex flex-wrap gap-x-5"> 
-                    {productData.options.map((option) => {
-                      if (option.title === "Color") {
-                        if (option.selections.length > 1) {
-                          // if there is only 1 color option then dont show the color option
+                    <div className="flex flex-wrap gap-x-5">
+                      {productData.options.map((option) => {
+                        if (option.title === "Color") {
+                          if (option.selections.length > 1) {
+                            // if there is only 1 color option then dont show the color option
+                            return (
+                              <div key={option.title}>
+                                <p className="mb-1">Color</p>
+                                {option.selections.map((selection) => {
+                                  return (
+                                    <input
+                                      key={selection.key}
+                                      type="radio"
+                                      name="radio-7"
+                                      style={{
+                                        backgroundColor: selection.value, // shouldnt do this but tailwind cant change class after build time
+                                        // borderColor: selection.value,
+                                      }}
+                                      // href={`#slide${productData.sku}${selection.linkedMediaItems[0]?.index || 0}`}
+                                      value={selection.description}
+                                      onClick={(e) => {
+                                        location.href = `#slide${
+                                          productData.sku
+                                        }${
+                                          selection.linkedMediaItems[0]
+                                            ?.index || 0
+                                        }`;
+                                        setSelection({
+                                          ...formSelection, // destructuring the old state
+                                          color: (e.target as HTMLInputElement)
+                                            .value, // set new color to state
+                                        });
+                                      }}
+                                      className={`radio mr-2`}
+                                    ></input>
+                                  );
+                                })}
+                              </div>
+                            );
+                          }
+                        } else {
                           return (
-                            <div key={option.title}>
-                              <p className="mb-1">Color</p>
-                              {option.selections.map((selection) => {
-                                return (
-                                  <input
-                                    key={selection.key}
-                                    type="radio"
-                                    name="radio-7"
-                                    style={{
-                                      backgroundColor: selection.value, // shouldnt do this but tailwind cant change class after build time
-                                      // borderColor: selection.value,
-                                    }}
-                                    // href={`#slide${productData.sku}${selection.linkedMediaItems[0]?.index || 0}`}
-                                    value={selection.description}
-                                    onClick={(e) => {
-                                      location.href = `#slide${
-                                        productData.sku
-                                      }${
-                                        selection.linkedMediaItems[0]?.index ||
-                                        0
-                                      }`;
-                                      setSelection({
-                                        ...formSelection, // destructuring the old state
-                                        color: (e.target as HTMLInputElement)
-                                          .value, // set new color to state
-                                      });
-                                    }}
-                                    className={`radio mr-2`}
-                                  ></input>
-                                );
-                              })}
+                            <div key={option.title} className="mb-1 h-20 w-40">
+                              <p className="mb-1">Size</p>
+                              <Select
+                                primaryColor={"blue"}
+                                value={formSelection?.size}
+                                onChange={(value: SelectValue) => {
+                                  const size = value as {
+                                    value: string;
+                                    label: string;
+                                  };
+                                  setSelection({
+                                    ...formSelection, // destructuring the old state
+                                    size: value, // set color to new state
+                                    sizeValue: size.value,
+                                  });
+                                }}
+                                options={option.selections.map((selection) => {
+                                  return {
+                                    value: selection.value,
+                                    label: selection.description,
+                                  };
+                                })}
+                              />
                             </div>
                           );
                         }
-                      } else {
-                        return (
-                          <div key={option.title} className="mb-1 h-20 w-40">
-                            <p className="mb-1">Size</p>
-                            <Select
-                              primaryColor={"blue"}
-                              value={formSelection?.size}
-                              onChange={(value: SelectValue) => {
-                                const size = value as {
-                                  value: string;
-                                  label: string;
-                                };
-                                setSelection({
-                                  ...formSelection, // destructuring the old state
-                                  size: value, // set color to new state
-                                  sizeValue: size.value,
-                                });
-                              }}
-                              options={option.selections.map((selection) => {
-                                return {
-                                  value: selection.value,
-                                  label: selection.description,
-                                };
-                              })}
-                            />
-                          </div>
-                        );
-                      }
-                    })}
-                    <div className="mb-1 h-20 w-40">
-                      <p className="mb-1">Quantity</p>
-                      <input
-                        type="number"
-                        className="input-bordered input h-10 w-20 rounded-md bg-white text-gray-500"
-                        inputMode="numeric"
-                        min="1"
-                        defaultValue={"1"}
-                        max="100"
-                        onChange={(e) => {
-                          setSelection({
-                            ...formSelection,
-                            qty: parseInt(e.target.value),
-                          });
-                        }}
-                      ></input>
-                    </div>
+                      })}
+                      <div className="mb-1 h-20 w-40">
+                        <p className="mb-1">Quantity</p>
+                        <input
+                          type="number"
+                          className="input-bordered input h-10 w-20 rounded-md bg-white text-gray-500"
+                          inputMode="numeric"
+                          min="1"
+                          defaultValue={"1"}
+                          max="100"
+                          onChange={(e) => {
+                            setSelection({
+                              ...formSelection,
+                              qty: parseInt(e.target.value),
+                            });
+                          }}
+                        ></input>
+                      </div>
                     </div>
                     {error && <p className="text-sm text-error">{error}</p>}
                   </div>
@@ -254,20 +249,19 @@ const ProductPage = ({
                     className={`btn-primary btn relative ${
                       state.loading ? "loading" : ""
                     }`}
-                    onClick={async () =>{
-                      setSubmitted(false)
+                    onClick={async () => {
+                      setSubmitted(false);
                       await onSubmit({
                         sku: productData.sku,
                         qty: formSelection.qty,
-                        color: formSelection.color || '',
-                        size: formSelection.sizeValue || '',
+                        color: formSelection.color || "",
+                        size: formSelection.sizeValue || "",
                         price: productData.price,
                         discountedPrice: productData.discountedPrice,
                         name: productData.name,
-                      })
-                      setSubmitted(true)
-                    }
-                    }
+                      });
+                      setSubmitted(true);
+                    }}
                   >
                     {"ADD TO CART"}
                   </button>

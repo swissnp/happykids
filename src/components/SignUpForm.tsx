@@ -31,17 +31,21 @@ export default function SignUpForm({
       onSubmit={handleSubmit(async (data) => {
         try {
           const response = await onSubmit(data);
-          if (response.status === 200){
+          if (response.status === 200) {
             setError("email", { message: "User account already existing." });
-          } else if (response.status === 422){
-            setError("root.serverError", { message: "Invalid data, please recheck your information." });
+          } else if (response.status === 422) {
+            setError("root.serverError", {
+              message: "Invalid data, please recheck your information.",
+            });
           } else if (response.ok) {
             await router.push({
               pathname: "/login",
               query: { SignUpSuccess: "true" },
             });
           } else {
-            setError("root.serverError", { message: "Unknown error, please try again later" });
+            setError("root.serverError", {
+              message: "Unknown error, please try again later",
+            });
           }
         } catch (e) {
           if (e instanceof Error) {

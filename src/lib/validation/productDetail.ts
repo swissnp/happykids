@@ -37,8 +37,7 @@ export const productDetailSizeSelectionsSchema = z.object({
   linkedMediaItems: z.null(),
 });
 
-export const productDetailOptionsSchema = 
-z.discriminatedUnion('title' ,[
+export const productDetailOptionsSchema = z.discriminatedUnion("title", [
   z.object({
     // color option
     id: z.string(),

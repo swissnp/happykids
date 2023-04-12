@@ -1,10 +1,9 @@
-import React, { useEffect, useState, useCallback, useContext } from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 const Header = (
-  {trigger}:
-  {trigger?: boolean} // trigger to update cart
+  { trigger }: { trigger?: boolean } // trigger to update cart
 ) => {
   const { data: session } = useSession();
   // const [cart, setCart] = useState<ICartItem[] | undefined>(undefined);
@@ -16,11 +15,12 @@ const Header = (
   const cart = data.data?.detail.cart_list;
 
   useEffect(() => {
-      async function fetchCart() {
-         trigger && await data.refetch();
-      }
-      fetchCart().catch((err) => console.log(err));
+    async function fetchCart() {
+      trigger && (await data.refetch());
+    }
+    fetchCart().catch((err) => console.log(err));
   }, [trigger]);
+
   return (
     <div className="navbar w-full rounded-2xl bg-base-100 drop-shadow-lg">
       <div className="navbar-start">
