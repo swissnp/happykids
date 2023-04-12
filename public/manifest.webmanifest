@@ -29,5 +29,8 @@
       ],
     "start_url": "/",
     "display": "standalone",
-    "orientation": "portrait"
+    "orientation": "portrait",
+    "background_color": "#ffffff",
+    "theme_color": "#ffffff",
+    "description": "HappyKids"
   }
