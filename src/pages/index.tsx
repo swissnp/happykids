@@ -7,6 +7,7 @@ import type {
   INewArrivalSchema,
   INewArrivalSchemaList,
 } from "~/lib/validation/newArrival";
+import Link from "next/link";
 const Home = ({ res }: { res: Array<INewArrivalSchemaList> }) => {
   return (
     <>
@@ -41,16 +42,19 @@ const Home = ({ res }: { res: Array<INewArrivalSchemaList> }) => {
                     assumenda excepturi exercitationem quasi. In deleniti eaque
                     aut repudiandae et a id nisi.
                   </p>
-                  <button className="btn-primary btn">Explore</button>
+                  <Link className="btn-primary btn" href= '/collection'>Explore</Link>
                 </div>
               </div>
             </div>
           </div>
           <div className="flex w-full flex-col  items-center justify-center rounded-xl bg-base-100 drop-shadow-lg">
             <h1 className="my-10 text-4xl font-bold ">New Arrivals</h1>
-            <div className="w-full overflow-scroll">
+            <div className="w-full pb-5 overflow-x-scroll">
               <Collection response={res} />
             </div>
+            <div className="w-full flex mb-5 place-content-center">
+              <Link className="btn-secondary btn" href='/collection'>View All</Link>
+              </div>
           </div>
         </div>
         <Footer />
