@@ -1,6 +1,6 @@
 # HappyKids
 
-This is built with `Next.js`, `React.js`, `Tailwindcss`, `tRPC`
+This is built with `Next.js`, `React.js`, `Tailwindcss`, `tRPC`, (`Workbox`)
 
 Deployment: https://happierkids.vercel.app/
 
