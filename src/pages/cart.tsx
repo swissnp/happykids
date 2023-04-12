@@ -14,6 +14,7 @@ import { isTRPCClientError } from "~/lib/validation/error";
 // this page will be client side rendered
 
 import { loadStripe } from "@stripe/stripe-js";
+import { signOut } from "next-auth/react";
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ``
 );
@@ -38,6 +39,7 @@ const Cart = () => {
     } catch (error) {
       if (isTRPCClientError(error)) {
         if (error.data?.code === "UNAUTHORIZED") {
+          await signOut({ redirect: false });
           await router.push({
             pathname: "/login",
             query: {
@@ -58,6 +60,7 @@ const Cart = () => {
     } catch (error) {
       if (isTRPCClientError(error)) {
         if (error.data?.code === "UNAUTHORIZED") {
+          await signOut({ redirect: false});
           await router.push({
             pathname: "/login",
             query: {
