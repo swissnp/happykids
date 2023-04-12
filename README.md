@@ -53,4 +53,4 @@ Here is the schemtics of the flow:
 
 ![image](https://raw.githubusercontent.com/swissnp/happykids/main/IMG_7575.jpg) 
 
-[[Bug] image that is hosted on skillkamp.com somehow doesnt work with workbox and next/image. However, you could see my deployment at https://happierkids-git-sw-swiss0404.vercel.app/]
+[[Bug] image that is hosted on skillkamp.com somehow doesnt work with workbox and next/image. However, you could see the deployment of PWA Version at https://happierkids-git-sw-swiss0404.vercel.app/ (not the main branch)]
