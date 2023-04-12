@@ -20,7 +20,7 @@ const Collection = ({
               <Carousel
                 mediaList={item.media}
                 sku={item.sku}
-                className="h-80 w-80"
+                classNameDiv=" w-80 h-80 "
               />
             </figure>
             <div className="card-body">
