@@ -1,7 +1,7 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import type { IViewCartResponse } from "~/lib/validation/cart";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import { api } from "~/utils/api";
@@ -10,6 +10,7 @@ import Link from "next/link";
 import type { IAddToCart } from "~/lib/validation/cart";
 import { useRouter } from "next/router";
 import CartInputField from "~/components/CartInputFIeld";
+import { isTRPCClientError } from "~/lib/validation/error";
 // this page will be client side rendered
 
 import { loadStripe } from "@stripe/stripe-js";
@@ -21,21 +22,54 @@ const Cart = () => {
   const editMutation = api.cart.edit.useMutation();
   const deleteMutation = api.cart.delete.useMutation();
   const checkoutMutation = api.cart.checkout.useMutation();
+  const [error, setError] = useState("");
 
   const router = useRouter();
 
   const onChange = async (data: IAddToCart): Promise<IViewCartResponse> => {
-    const response = await editMutation.mutateAsync(data);
-    await result.refetch();
-    return response;
+      const response = await editMutation.mutateAsync(data);
+      await result.refetch();
+      return response;
   };
   const removeItem = async (data: IAddToCart) => {
-    await deleteMutation.mutateAsync(data);
-    await result.refetch();
+    try {
+      await deleteMutation.mutateAsync(data);
+      await result.refetch();
+    } catch (error) {
+      if (isTRPCClientError(error)) {
+        if (error.data?.code === "UNAUTHORIZED") {
+          await router.push({
+            pathname: "/login",
+            query: {
+              message: "Unauthorize, Please login first.",
+              redirect: router.asPath,
+            },
+          });
+        } else {
+          setError(error.message);
+        }
+      }
+    }
   };
   const checkout = async () => {
-    const response = await checkoutMutation.mutateAsync();
-    await router.push(response.url || "");
+    try {
+      const response = await checkoutMutation.mutateAsync();
+      await router.push(response.url || "");
+    } catch (error) {
+      if (isTRPCClientError(error)) {
+        if (error.data?.code === "UNAUTHORIZED") {
+          await router.push({
+            pathname: "/login",
+            query: {
+              message: "Unauthorize, Please login first.",
+              redirect: router.asPath,
+            },
+          });
+        } else {
+          setError(error.message);
+        }
+      }
+    }
   };
 
   useEffect(() => {
@@ -184,6 +218,7 @@ const Cart = () => {
                 } $`}</div>
               </div>
             )}
+            {error && <p className="w-full text-center text-error">{error}</p>}
             <button
               className="btn-primary btn mx-10 mb-10 mt-5 flex flex-row-reverse"
               onClick={() => checkout()}

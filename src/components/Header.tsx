@@ -37,10 +37,10 @@ const Header = () => {
               <Link href="/collection">Shop Collection</Link>
             </li>
             <li>
-              <a className="justify-between">Our Story</a>
+            <Link className="justify-between" href="/story">Our Story</Link>
             </li>
             <li>
-              <a>Contact</a>
+            <Link href="/contact">Contact</Link>
             </li>
           </ul>
         </div>
@@ -54,10 +54,10 @@ const Header = () => {
             <Link href="/collection">Shop Collection</Link>
           </li>
           <li>
-            <a>Our Story</a>
+          <Link href="/story">Our Story</Link>
           </li>
           <li>
-            <a>Contact</a>
+          <Link href="/contact">Contact</Link>
           </li>
         </ul>
       </div>
