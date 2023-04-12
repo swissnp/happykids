@@ -6,14 +6,7 @@
 
 const config = {
   reactStrictMode: true,
-  images: { remotePatterns: [
-    {
-      protocol: 'https',
-      hostname: 'skillkamp-api.com',
-      port: '',
-      pathname: '/static/**',
-    },
-  ], },
+  images: { domains: ["skillkamp-api.com"] },
   /**
    * If you have the "experimental: { appDir: true }" setting enabled, then you
    * must comment the below `i18n` config out.

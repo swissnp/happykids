@@ -47,4 +47,5 @@ src/pages/product.json
 **/public/sw.js
 **/public/worker-*.js
 next.config.js
-public/sw.js.map
+**/public/sw.js.map
+
