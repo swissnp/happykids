@@ -181,7 +181,7 @@ const withPWA = require('next-pwa')({
         if (pathname.startsWith('/api/')) return false
         return true
       },
-      handler: 'CacheFirst',
+      handler: 'NetworkFirst',
       options: {
         cacheName: 'others',
         expiration: {
@@ -196,7 +196,7 @@ const withPWA = require('next-pwa')({
         const isSameOrigin = self.origin === url.origin
         return true
       },
-      handler: 'CacheFirst',
+      handler: 'NetworkFirst',
       options: {
         cacheName: 'cross-origin',
         expiration: {
