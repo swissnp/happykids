@@ -48,3 +48,5 @@ Here is the schemtics of the flow:
 </details>
 
 ✅ Incremental Static Rendering (to imporve performance)
+
+⚪️ Installable (Progressive Web App) [[Bug] image that is hosted on skillkamp.com somehow doesnt work with workbox and next/image you could see my deployment at https://happierkids-git-sw-swiss0404.vercel.app/]
