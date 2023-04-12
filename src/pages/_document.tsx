@@ -157,6 +157,14 @@ export default function Document() {
         href="icons/apple-splash-1136-640.jpg"
         media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"
       />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+        <link
+          rel="manifest"
+          href="/manifest.webmanifest"
+          crossOrigin="use-credentials"
+        />
+        <link rel="apple-touch-icon" href="icons/apple-icon-180.png" />
 
       <Head />
       <body>
