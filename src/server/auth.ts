@@ -79,6 +79,10 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+  jwt: {
+    secret: "super-secret",
+    maxAge: 1 * 30 * 60, // 15 days
+  },
   callbacks: {
     jwt: ({ token, user }: { token: JWT; user: User }) => {
       if (user) {
