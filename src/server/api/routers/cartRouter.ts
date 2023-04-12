@@ -6,10 +6,11 @@ import Stripe from "stripe";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
   apiVersion: "2022-11-15",
 });
+import z from "zod";
 
 export const CartRouter = createTRPCRouter({
   view: protectedProcedure
-    // .input(z.null())
+    .input(z.null())
     .query(async ({ ctx }) => {
       const token = ctx.token || "";
       console.log(token);

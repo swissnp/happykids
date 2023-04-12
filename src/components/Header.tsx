@@ -1,14 +1,26 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useContext } from "react";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import { api } from "~/utils/api";
-import { ICartItem } from "~/lib/validation/cart";
-import { Result } from "postcss";
-
-const Header = () => {
+const Header = (
+  {trigger}:
+  {trigger?: boolean} // trigger to update cart
+) => {
   const { data: session } = useSession();
-  const cart = api.cart.view.useQuery().data?.detail.cart_list;
+  // const [cart, setCart] = useState<ICartItem[] | undefined>(undefined);
 
+  const data = api.cart.view.useQuery(
+    null, // some how useQuery need to have a query key in order to recieve options
+    { enabled: !!session }
+  );
+  const cart = data.data?.detail.cart_list;
+
+  useEffect(() => {
+      async function fetchCart() {
+         trigger && await data.refetch();
+      }
+      fetchCart().catch((err) => console.log(err));
+  }, [trigger]);
   return (
     <div className="navbar w-full rounded-2xl bg-base-100 drop-shadow-lg">
       <div className="navbar-start">
@@ -37,10 +49,12 @@ const Header = () => {
               <Link href="/collection">Shop Collection</Link>
             </li>
             <li>
-            <Link className="justify-between" href="/story">Our Story</Link>
+              <Link className="justify-between" href="/story">
+                Our Story
+              </Link>
             </li>
             <li>
-            <Link href="/contact">Contact</Link>
+              <Link href="/contact">Contact</Link>
             </li>
           </ul>
         </div>
@@ -54,10 +68,10 @@ const Header = () => {
             <Link href="/collection">Shop Collection</Link>
           </li>
           <li>
-          <Link href="/story">Our Story</Link>
+            <Link href="/story">Our Story</Link>
           </li>
           <li>
-          <Link href="/contact">Contact</Link>
+            <Link href="/contact">Contact</Link>
           </li>
         </ul>
       </div>

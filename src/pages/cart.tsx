@@ -18,7 +18,7 @@ const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ``
 );
 const Cart = () => {
-  const result = api.cart.view.useQuery();
+  const result = api.cart.view.useQuery(null);
   const editMutation = api.cart.edit.useMutation();
   const deleteMutation = api.cart.delete.useMutation();
   const checkoutMutation = api.cart.checkout.useMutation();

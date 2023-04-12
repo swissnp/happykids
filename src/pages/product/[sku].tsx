@@ -10,7 +10,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { api } from "~/utils/api";
 import { getSku, getProductData } from "~/lib/product";
-import { useEffect, useState } from "react";
+import { useEffect, useState, createContext } from "react";
 import type { IProductDetail } from "~/lib/validation/productDetail";
 import type { SelectValue } from "react-tailwindcss-select/dist/components/type";
 import { type IAddToCart } from "~/lib/validation/cart";
@@ -19,8 +19,9 @@ import type {
   INewArrivalSchemaList,
   INewArrivalSchema,
 } from "~/lib/validation/newArrival";
-
 //ISR this page for better SEO and performance
+
+
 
 const ProductPage = ({
   productData,
@@ -33,12 +34,15 @@ const ProductPage = ({
   const [state, setState] = useState<{ loading: boolean }>({
     loading: false,
   });
+  const [submitted, setSubmitted] = useState<boolean>(false);
   const [formSelection, setSelection] = useState<{
     color: string | null;
     size: SelectValue | null;
     sizeValue: string | null;
     qty: number;
   }>({ color: null, size: null, sizeValue: null, qty: 1 });
+
+  
 
   // this will set the state when there is only one color
   useEffect(() => {
@@ -57,6 +61,7 @@ const ProductPage = ({
 
   const { mutateAsync } = api.cart.add.useMutation();
   const router = useRouter();
+
 
   const onSubmit = async (data: IAddToCart) => {
     if (!formSelection.color) {
@@ -111,7 +116,7 @@ const ProductPage = ({
       <main className="flex min-h-screen w-screen flex-col bg-base-200">
         <ToastContainer />
         <div className="fixed top-0 z-50 flex w-full justify-start px-4 py-3">
-          <Header />
+          <Header trigger={submitted} />
         </div>
         <div className="relative mt-24 flex flex-col justify-center px-4">
           <div className="mb-5 flex flex-col overflow-hidden rounded-xl bg-white shadow-2xl">
@@ -249,8 +254,9 @@ const ProductPage = ({
                     className={`btn-primary btn relative ${
                       state.loading ? "loading" : ""
                     }`}
-                    onClick={() =>
-                      onSubmit({
+                    onClick={async () =>{
+                      setSubmitted(false)
+                      await onSubmit({
                         sku: productData.sku,
                         qty: formSelection.qty,
                         color: formSelection.color || '',
@@ -259,6 +265,8 @@ const ProductPage = ({
                         discountedPrice: productData.discountedPrice,
                         name: productData.name,
                       })
+                      setSubmitted(true)
+                    }
                     }
                   >
                     {"ADD TO CART"}
