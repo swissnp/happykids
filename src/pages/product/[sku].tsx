@@ -19,6 +19,7 @@ import type {
   INewArrivalSchemaList,
   INewArrivalSchema,
 } from "~/lib/validation/newArrival";
+import { signOut } from "next-auth/react";
 //ISR this page for better SEO and performance
 
 const ProductPage = ({
@@ -75,6 +76,7 @@ const ProductPage = ({
       } catch (error) {
         if (isTRPCClientError(error)) {
           if (error.data?.code === "UNAUTHORIZED") {
+            await signOut({ redirect: false })
             await router.push({
               pathname: "/login",
               query: {
