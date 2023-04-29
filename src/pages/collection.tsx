@@ -199,7 +199,7 @@ const ShopCollection = () => {
         <div className="fixed top-0 z-50 flex w-full justify-start px-4 py-3">
           <Header />
         </div>
-        <div className="relative mx-4 mt-24 flex flex-col justify-center  gap-6 lg:flex-row">
+        <div className="relative mx-4 mt-24 flex flex-col justify-center gap-6 lg:flex-row">
           <div className="flex h-fit w-full flex-col overflow-hidden rounded-xl bg-base-100 px-5 py-10 shadow-2xl lg:w-1/4">
             <h1 className="mb-3 text-2xl font-bold">Filters</h1>
             {filter ? (
